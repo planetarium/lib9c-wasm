@@ -1,0 +1,3 @@
+[submodule "lib9c"]
+	path = lib9c
+	url = git@github.com:planetarium/lib9c.git
