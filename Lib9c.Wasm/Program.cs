@@ -7,6 +7,7 @@ using Bencodex;
 using Libplanet;
 using Libplanet.Action;
 using Microsoft.JSInterop;
+using Nekoyume.Action;
 
 namespace Lib9c.Wasm;
 public class Program
@@ -37,10 +38,9 @@ public class Program
             .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) == actionTypeString);
 
         IAction action = (IAction)Activator.CreateInstance(actionType);
-
         FillFieldsFromJsonElements(actionType, action, dictionary);
 
-        return new Codec().Encode(action.PlainValue);
+        return new Codec().Encode(((PolymorphicAction<ActionBase>)(dynamic)action).PlainValue);
     }
 
     private static void FillFieldsFromJsonElements(Type type, object instance, Dictionary<string, object> dictionary) {
