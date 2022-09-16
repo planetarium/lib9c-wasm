@@ -28,7 +28,7 @@ public class Program
         Type actionType = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
             .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) == actionTypeString);
         var fields = actionType.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => f.IsPublic);
-        var properties = actionType.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.CanWrite && p.GetSetMethod(true).IsPublic);
+        var properties = actionType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => p.CanWrite);
         return fields.Select(f => new Input(f.Name, ResolveFullName(f.FieldType))).Concat(properties.Select(p => new Input(p.Name, ResolveFullName(p.PropertyType)))).ToArray();
     }
 
