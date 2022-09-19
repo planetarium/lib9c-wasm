@@ -26,6 +26,7 @@ async function main() {
         const BIGINT_TYPE = ts.factory.createTypeReferenceNode("bigint");
         const STRING_TYPE = ts.factory.createTypeReferenceNode("string");
         const BOOLEAN_TYPE = ts.factory.createTypeReferenceNode("boolean");
+        const STRING_ARRAY_TYPE = ts.factory.createArrayTypeNode(STRING_TYPE);
         const NUMBER_ARRAY_TYPE = ts.factory.createArrayTypeNode(NUMBER_TYPE);
         const UINT8_ARRAY_TYPE = ts.factory.createTypeReferenceNode("Uint8Array");
         const MAP: Map<string, [ts.TypeNode, boolean]> = new Map([
@@ -38,12 +39,9 @@ async function main() {
             ["System.Byte[]", [UINT8_ARRAY_TYPE, false]],
             ["System.Nullable<System.Int32>", [NUMBER_TYPE, true]],
             ["System.Collections.Generic.List<System.Int32>", [NUMBER_ARRAY_TYPE, false]],
+            ["System.Collections.Generic.List<System.Guid>", [STRING_ARRAY_TYPE, false]],
         ]);
-        const properties = dotnet.Lib9c.Wasm.GetAvailableInputs(typeId).map(({ name, typeName }) => {
-            const [type, isOptional] = MAP.get(typeName) || [ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(typeName)), false];
-            return ts.factory.createPropertySignature(undefined, name, isOptional ? ts.factory.createToken(ts.SyntaxKind.QuestionToken) : undefined, type);
-        });
-        const plainValueType = ts.factory.createTypeLiteralNode(properties);
+        const plainValueType = ts.factory.createTypeReferenceNode(dotnet.Lib9c.Wasm.GetAvailableInputs(typeId));
         plainValueTypes.push(plainValueType);
         return [
             ts.factory.createParameterDeclaration(undefined, undefined, "typeId", undefined, ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(typeId))),
