@@ -80,9 +80,25 @@ async function main() {
         ts.factory.createReturnStatement(ts.factory.createCallExpression(ts.factory.createIdentifier("dotnet.boot"), undefined, undefined))
     ], true));
 
+    const buildTransactionFunctionImpl = ts.factory.createFunctionDeclaration(modifiers, undefined, "buildTransaction", undefined, [
+        ts.factory.createParameterDeclaration(undefined, undefined, "nonce", undefined, ts.factory.createTypeReferenceNode("number")),
+        ts.factory.createParameterDeclaration(undefined, undefined, "publicKey", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
+        ts.factory.createParameterDeclaration(undefined, undefined, "signer", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
+        ts.factory.createParameterDeclaration(undefined, undefined, "genesisHash", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
+        ts.factory.createParameterDeclaration(undefined, undefined, "action", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
+    ], ts.factory.createTypeReferenceNode("Uint8Array"), ts.factory.createBlock([
+        ts.factory.createReturnStatement(ts.factory.createCallExpression(ts.factory.createIdentifier("dotnet.Lib9c.Wasm.BuildRawTransaction"), undefined, [
+            ts.factory.createIdentifier("nonce"),
+            ts.factory.createIdentifier("publicKey"),
+            ts.factory.createIdentifier("signer"),
+            ts.factory.createIdentifier("genesisHash"),
+            ts.factory.createIdentifier("action"),
+        ]))
+    ], true));
+
     const importDecl = ts.factory.createImportDeclaration(undefined, ts.factory.createImportClause(false, ts.factory.createIdentifier("dotnet"), undefined), ts.factory.createStringLiteral("./Lib9c.Wasm/bin/dotnet"));
 
-    const nodeArray = ts.factory.createNodeArray([importDecl, actionTypeIdDecl, ...functionDecls, functionImpl, bootFunctionImpl]);
+    const nodeArray = ts.factory.createNodeArray([importDecl, actionTypeIdDecl, ...functionDecls, functionImpl, bootFunctionImpl, buildTransactionFunctionImpl]);
     const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
     console.log(result);
 }
