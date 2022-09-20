@@ -1,8 +1,7 @@
-import { buildAction } from "./wrapper";
+import { buildAction, boot } from "./wrapper";
 
 async function main() {
-    const dotnet = require('./Lib9c.Wasm/bin/dotnet');
-    await dotnet.boot();
+    await boot();
 
     console.log(Buffer.from(buildAction("stake", {
         Amount: 10n,

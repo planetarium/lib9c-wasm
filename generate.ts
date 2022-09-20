@@ -76,9 +76,13 @@ async function main() {
         )
     ], true));
 
+    const bootFunctionImpl = ts.factory.createFunctionDeclaration(modifiers, undefined, "boot", undefined, [], ts.factory.createTypeReferenceNode("Promise<void>"), ts.factory.createBlock([
+        ts.factory.createReturnStatement(ts.factory.createCallExpression(ts.factory.createIdentifier("dotnet.boot"), undefined, undefined))
+    ], true));
+
     const importDecl = ts.factory.createImportDeclaration(undefined, ts.factory.createImportClause(false, ts.factory.createIdentifier("dotnet"), undefined), ts.factory.createStringLiteral("./Lib9c.Wasm/bin/dotnet"));
 
-    const nodeArray = ts.factory.createNodeArray([importDecl, actionTypeIdDecl, ...functionDecls, functionImpl]);
+    const nodeArray = ts.factory.createNodeArray([importDecl, actionTypeIdDecl, ...functionDecls, functionImpl, bootFunctionImpl]);
     const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
     console.log(result);
 }
