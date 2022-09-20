@@ -201,7 +201,8 @@ public class Program
                 return type.Name.EndsWith("BattleLog")
                     || type.Name.EndsWith("Result")
                     || type.Name.EndsWith("AvatarState")
-                    || type.Name.EndsWith("ArenaInfo");
+                    || type.Name.EndsWith("ArenaInfo")
+                    || type.Name.EndsWith("Digest");
             }
 
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredType(f.FieldType) && f.IsPublic);
