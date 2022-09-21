@@ -5,7 +5,10 @@
   "main": "example.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "generate-docs": "rm -rf ./Lib9c.Wasm/bin/; dotnet publish; ts-node ./generate.ts > wrapper.ts; typedoc --out docs ./wrapper.ts"
+    "build": "yarn clean-dotnet; yarn build-wrapper",
+    "clean-dotnet": "rm -rf ./Lib9c.Wasm/bin/; dotnet publish",
+    "build-wrapper": "ts-node ./generate.ts > wrapper.ts",
+    "generate-docs": "yarn build; typedoc --out docs ./wrapper.ts"
   },
   "repository": {
     "type": "git",
