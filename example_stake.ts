@@ -16,9 +16,9 @@ async function main() {
     });
     console.log(toHex(action));
 
-    const publicKey = parseHex("03b672312dec15f25acaae755c7293945223b6c678d39758fdfcf6bea5efe82de8");
-    const signer = parseHex("89BcA8110e12aC68D124f06Dd0E19D909b4Ada6F");
-    const genesisHash = parseHex("4582250d0da33b06779a8475d283d5dd210c683b9b999d74d03fac4f58fa6bce");
+    const publicKey = parseHex("0228c66126c62dde22c84cfa55a0578762c95481a81c4b4b2ccf63024b0929bb1b");
+    const signer = parseHex("2cBaDf26574756119cF705289C33710F27443767");
+    const genesisHash = parseHex("15e07324f162d7f28037dc2ab88439c4103602c204af9052befb8a44249ef1fb");
     const tx = buildTransaction(0, publicKey, signer, genesisHash, action);
     console.log(toHex(tx));
 }
