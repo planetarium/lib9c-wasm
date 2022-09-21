@@ -20,10 +20,11 @@ public record RawUnsignedTransaction(long nonce, byte[] publicKey, byte[] signer
             .Add(SignerKey, signer)
             .Add(UpdatedAddressesKey, new Bencodex.Types.IValue[0])
             .Add(PublicKeyKey, publicKey)
+            .Add(GenesisHashKey, genesisHash)
             .Add(
                 TimestampKey,
                 timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-            .Add(ActionsKey, new Bencodex.Types.IValue[] { (Bencodex.Types.Binary)action });
+            .Add(ActionsKey, new Bencodex.Types.IValue[] { new Bencodex.Codec().Decode(action) });
     }
 
     public byte[] Serialize()
