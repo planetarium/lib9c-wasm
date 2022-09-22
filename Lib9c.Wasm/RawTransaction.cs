@@ -1,19 +1,11 @@
 using System.Globalization;
 
 namespace Lib9c.Wasm;
+
+using static TransactionSerializationConstants;
+
 public record RawTransaction(long nonce, byte[] publicKey, byte[] signer, byte[] genesisHash, byte[] action, DateTimeOffset timestamp, byte[] signature)
 {
-    private static readonly byte[] NonceKey = { 0x6e }; // 'n'
-    private static readonly byte[] SignerKey = { 0x73 }; // 's'
-    private static readonly byte[] GenesisHashKey = { 0x67 }; // 'g'
-    private static readonly byte[] UpdatedAddressesKey = { 0x75 }; // 'u'
-    private static readonly byte[] PublicKeyKey = { 0x70 }; // 'p'
-    private static readonly byte[] TimestampKey = { 0x74 }; // 't'
-    private static readonly byte[] ActionsKey = { 0x61 }; // 'a'
-    private static readonly byte[] SignatureKey = { 0x53 }; // 'S'
-
-    private const string TimestampFormat = "yyyy-MM-ddTHH:mm:ss.ffffffZ";
-
     public Bencodex.Types.IValue ToBencodex()
     {
         return Bencodex.Types.Dictionary.Empty
