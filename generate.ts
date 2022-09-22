@@ -21,6 +21,7 @@ async function main() {
     generateTxTsFile();
 
     copyLib9cWasmFiles();
+    copyUtilsTs();
 }
 
 function generateIndexTsFile() {
@@ -105,6 +106,10 @@ function copyLib9cWasmFiles() {
     copyFileSync("./Lib9c.Wasm/bin/dotnet.js", "generated/wasm/dotnet.js");
     copyFileSync("./Lib9c.Wasm/bin/dotnet.js.map", "generated/wasm/dotnet.js.map");
     copyFileSync("./Lib9c.Wasm/bin/dotnet.d.ts", "generated/wasm/dotnet.d.ts");
+}
+
+function copyUtilsTs() {
+    copyFileSync("./utils.ts", "generated/utils.ts");
 }
 
 
