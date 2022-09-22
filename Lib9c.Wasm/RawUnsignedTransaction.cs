@@ -31,4 +31,34 @@ public record RawUnsignedTransaction(long nonce, byte[] publicKey, byte[] signer
     {
         return new Bencodex.Codec().Encode(ToBencodex());
     }
+
+    public static RawUnsignedTransaction Deserialize(byte[] bytes)
+    {
+        var codec = new Bencodex.Codec();
+        var value = codec.Decode(bytes);
+        var dict = (Bencodex.Types.Dictionary)value;
+        var action = codec.Encode(((Bencodex.Types.List)dict[ActionsKey]).Single());
+        var timestamp = DateTimeOffset.ParseExact((Bencodex.Types.Text)dict[TimestampKey], TimestampFormat, CultureInfo.InvariantCulture);
+        return new RawUnsignedTransaction(
+            (Bencodex.Types.Integer)dict[NonceKey],
+            (Bencodex.Types.Binary)dict[PublicKeyKey],
+            (Bencodex.Types.Binary)dict[SignerKey],
+            (Bencodex.Types.Binary)dict[GenesisHashKey],
+            action,
+            timestamp
+        );
+    }
+
+    public RawTransaction AttachSignature(byte[] signature)
+    {
+        return new RawTransaction(
+            nonce,
+            publicKey,
+            signer,
+            genesisHash,
+            action,
+            timestamp,
+            signature
+        );
+    }
 }

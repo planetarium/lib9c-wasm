@@ -96,9 +96,19 @@ async function main() {
         ]))
     ], true));
 
+    const attachSignatureFunctionImpl = ts.factory.createFunctionDeclaration(modifiers, undefined, "attachSignature", undefined, [
+        ts.factory.createParameterDeclaration(undefined, undefined, "unsignedTx", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
+        ts.factory.createParameterDeclaration(undefined, undefined, "signature", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
+    ], ts.factory.createTypeReferenceNode("Uint8Array"), ts.factory.createBlock([
+        ts.factory.createReturnStatement(ts.factory.createCallExpression(ts.factory.createIdentifier("dotnet.Lib9c.Wasm.AttachSignature"), undefined, [
+            ts.factory.createIdentifier("unsignedTx"),
+            ts.factory.createIdentifier("signature"),
+        ]))
+    ], true));
+
     const importDecl = ts.factory.createImportDeclaration(undefined, ts.factory.createImportClause(false, ts.factory.createIdentifier("dotnet"), undefined), ts.factory.createStringLiteral("./Lib9c.Wasm/bin/dotnet"));
 
-    const nodeArray = ts.factory.createNodeArray([importDecl, actionTypeIdDecl, ...functionDecls, functionImpl, bootFunctionImpl, buildUnsignedTransactionFunctionImpl]);
+    const nodeArray = ts.factory.createNodeArray([importDecl, actionTypeIdDecl, ...functionDecls, functionImpl, bootFunctionImpl, buildUnsignedTransactionFunctionImpl, attachSignatureFunctionImpl]);
     const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
     console.log(result);
 }

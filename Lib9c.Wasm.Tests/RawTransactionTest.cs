@@ -16,8 +16,8 @@ public class RawTransactionTest
         var nonce = 2;
         var genesisHash = BlockHash.FromString("15e07324f162d7f28037dc2ab88439c4103602c204af9052befb8a44249ef1fb");
         var actionBytes = ByteUtil.ParseHex("6475373a747970655f696475353a7374616b6575363a76616c7565736475323a616d6930656565");
-        var timestamp = DateTimeOffset.ParseExact("2022-09-22T02:02:13.843000Z", "yyyy-MM-ddTHH:mm:ss.ffffffZ", CultureInfo.InvariantCulture);
-        var signature = ByteUtil.ParseHex("3045022100da631aae7fa09233b7fbb80d92207562ddae4460774044290f421f4719ed0618022015bf2e0971a46ac8edb1ba22cc454b8c1f2979d89fa1fd237c775d6ec57ff022");
+        var timestamp = DateTimeOffset.ParseExact("2022-09-22T02:53:38.588000Z", "yyyy-MM-ddTHH:mm:ss.ffffffZ", CultureInfo.InvariantCulture);
+        var signature = ByteUtil.ParseHex("30450221009530110dfbed6dc40e877a335eaf73c6a68044468ec54f4c32a91b8c16c832db02201ca71b4ca8e7db32dbf1bf872ed11151900a5cdb98f241600c566550b06018d5");
 
         var rawTx = new RawTransaction(nonce, publicKey.ToImmutableArray(false).ToArray(), address.ToByteArray(), genesisHash.ToByteArray(), actionBytes, timestamp, signature);
         var serialized = rawTx.Serialize();

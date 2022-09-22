@@ -50,6 +50,12 @@ public class Program
         return tx.Serialize();
     }
 
+    [JSInvokable]
+    public static byte[] AttachSignature(byte[] unsignedTransaction, byte[] signature)
+    {
+        return RawUnsignedTransaction.Deserialize(unsignedTransaction).AttachSignature(signature).Serialize();
+    }
+
     private static string RemoveUnexpectedParts(string typeName)
     {
         int index = typeName.IndexOf('`');
