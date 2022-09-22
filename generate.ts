@@ -64,13 +64,7 @@ async function main() {
                 undefined,
                 [
                     ts.factory.createIdentifier("typeId"),
-                    ts.factory.createNewExpression(
-                        ts.factory.createIdentifier("Map"),
-                        undefined,
-                        [
-                            ts.factory.createCallExpression(ts.factory.createIdentifier("Object.entries"), undefined, [ts.factory.createIdentifier("plainValue")])
-                        ]
-                    )
+                    ts.factory.createAsExpression(ts.factory.createIdentifier("plainValue"), ts.factory.createTypeReferenceNode("any"))
                 ]
             )
         )
