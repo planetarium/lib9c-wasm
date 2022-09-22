@@ -15,7 +15,8 @@ public static class JsonUtils
         {
             if (type.GetField(pair.Key, flags) is { } field)
             {
-                var value = pair.Value switch {
+                var value = pair.Value switch
+                {
                     null => null,
                     JsonElement element => ConvertJsonElementTo(element, field.FieldType),
                     _ => throw new ArgumentException(),
@@ -24,7 +25,8 @@ public static class JsonUtils
             }
             else if (type.GetProperty(pair.Key, flags) is { } property)
             {
-                var value = pair.Value switch {
+                var value = pair.Value switch
+                {
                     null => null,
                     JsonElement element => ConvertJsonElementTo(element, property.PropertyType),
                     _ => throw new ArgumentException(),
