@@ -22,25 +22,6 @@ async function main() {
     const plainValueTypes: ts.TypeNode[] = [];
 
     function generateBuildActionFunctionParameters(typeId: string): readonly ts.ParameterDeclaration[] {
-        const NUMBER_TYPE = ts.factory.createTypeReferenceNode("number");
-        const BIGINT_TYPE = ts.factory.createTypeReferenceNode("bigint");
-        const STRING_TYPE = ts.factory.createTypeReferenceNode("string");
-        const BOOLEAN_TYPE = ts.factory.createTypeReferenceNode("boolean");
-        const STRING_ARRAY_TYPE = ts.factory.createArrayTypeNode(STRING_TYPE);
-        const NUMBER_ARRAY_TYPE = ts.factory.createArrayTypeNode(NUMBER_TYPE);
-        const UINT8_ARRAY_TYPE = ts.factory.createTypeReferenceNode("Uint8Array");
-        const MAP: Map<string, [ts.TypeNode, boolean]> = new Map([
-            ["System.Int32", [NUMBER_TYPE, false]],
-            ["Libplanet.Address", [STRING_TYPE, false]],
-            ["System.Guid", [STRING_TYPE, false]],
-            ["System.String", [STRING_TYPE, false]],
-            ["System.Boolean", [BOOLEAN_TYPE, false]],
-            ["System.Numerics.BigInteger", [BIGINT_TYPE, false]],
-            ["System.Byte[]", [UINT8_ARRAY_TYPE, false]],
-            ["System.Nullable<System.Int32>", [NUMBER_TYPE, true]],
-            ["System.Collections.Generic.List<System.Int32>", [NUMBER_ARRAY_TYPE, false]],
-            ["System.Collections.Generic.List<System.Guid>", [STRING_ARRAY_TYPE, false]],
-        ]);
         const plainValueType = ts.factory.createTypeReferenceNode(dotnet.Lib9c.Wasm.GetAvailableInputs(typeId));
         plainValueTypes.push(plainValueType);
         return [
