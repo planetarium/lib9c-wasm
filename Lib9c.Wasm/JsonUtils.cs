@@ -10,9 +10,10 @@ public static class JsonUtils
 {
     public static void FillFieldsFromJsonElements(Type type, object instance, Dictionary<string, object> dictionary)
     {
+        var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
         foreach (var pair in dictionary)
         {
-            if (type.GetField(pair.Key) is { } field)
+            if (type.GetField(pair.Key, flags) is { } field)
             {
                 if (pair.Value is JsonElement element)
                 {
@@ -23,9 +24,16 @@ public static class JsonUtils
                     throw new ArgumentException();
                 }
             }
-            else if (type.GetProperty(pair.Key) is { } property)
+            else if (type.GetProperty(pair.Key, flags) is { } property)
             {
-                property.SetValue(instance, pair.Value);
+                if (pair.Value is JsonElement element)
+                {
+                    property.SetValue(instance, ConvertJsonElementTo(element, property.PropertyType));
+                }
+                else
+                {
+                    throw new ArgumentException();
+                }
             }
             else
             {
