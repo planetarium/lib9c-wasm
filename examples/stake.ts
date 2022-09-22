@@ -1,14 +1,7 @@
 import { buildAction, buildUnsignedTransaction, attachSignature, boot } from "../wrapper";
+import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
-
-function parseHex(hex: string): Uint8Array {
-    return Uint8Array.from(Buffer.from(hex, "hex"));
-}
-
-function toHex(buf: Uint8Array): string {
-    return Buffer.from(buf).toString("hex");
-}
 
 async function main() {
     await boot();
