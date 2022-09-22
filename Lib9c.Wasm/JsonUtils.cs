@@ -129,7 +129,7 @@ public static class JsonUtils
 
         if (type == typeof(System.Numerics.BigInteger))
         {
-            return "bigint";
+            return "string";
         }
 
         if (type == typeof(System.Int32))
