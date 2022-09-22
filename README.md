@@ -39,3 +39,11 @@ yarn generate-docs
 ```
 
 It'll generate `/docs` directory then you can open the `/docs/index.html` file in your browser.
+
+## Run .NET tests
+
+You can run .NET tests.
+
+```
+dotnet test
+```
