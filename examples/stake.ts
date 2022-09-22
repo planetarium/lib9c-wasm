@@ -1,4 +1,4 @@
-import { buildAction, buildUnsignedTransaction, attachSignature, boot } from "./wrapper";
+import { buildAction, buildUnsignedTransaction, attachSignature, boot } from "../wrapper";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
 
