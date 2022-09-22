@@ -15,25 +15,21 @@ public static class JsonUtils
         {
             if (type.GetField(pair.Key, flags) is { } field)
             {
-                if (pair.Value is JsonElement element)
-                {
-                    field.SetValue(instance, ConvertJsonElementTo(element, field.FieldType));
-                }
-                else
-                {
-                    throw new ArgumentException();
-                }
+                var value = pair.Value switch {
+                    null => null,
+                    JsonElement element => ConvertJsonElementTo(element, field.FieldType),
+                    _ => throw new ArgumentException(),
+                };
+                field.SetValue(instance, value);
             }
             else if (type.GetProperty(pair.Key, flags) is { } property)
             {
-                if (pair.Value is JsonElement element)
-                {
-                    property.SetValue(instance, ConvertJsonElementTo(element, property.PropertyType));
-                }
-                else
-                {
-                    throw new ArgumentException();
-                }
+                var value = pair.Value switch {
+                    null => null,
+                    JsonElement element => ConvertJsonElementTo(element, property.PropertyType),
+                    _ => throw new ArgumentException(),
+                };
+                property.SetValue(instance, value);
             }
             else
             {
