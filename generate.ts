@@ -6,7 +6,7 @@ import dotnet from './Lib9c.Wasm/bin/dotnet';
 
 const file = ts.createSourceFile("source.ts", "", ts.ScriptTarget.ESNext, false, ts.ScriptKind.TS);
 const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
-const importDecl = ts.factory.createImportDeclaration(undefined, ts.factory.createImportClause(false, ts.factory.createIdentifier("dotnet"), undefined), ts.factory.createStringLiteral("./wasm/dotnet"));
+const importDecl = ts.factory.createImportDeclaration(undefined, ts.factory.createImportClause(false, ts.factory.createIdentifier("dotnet"), undefined), ts.factory.createStringLiteral("./dotnet"));
 const exportModifiers = [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)];
 
 async function main() {
@@ -99,13 +99,9 @@ function generateTxTsFile() {
 }
 
 function copyLib9cWasmFiles() {
-    if (!existsSync("./generated/wasm")) {
-        mkdirSync("./generated/wasm");
-    }
-
-    copyFileSync("./Lib9c.Wasm/bin/dotnet.js", "generated/wasm/dotnet.js");
-    copyFileSync("./Lib9c.Wasm/bin/dotnet.js.map", "generated/wasm/dotnet.js.map");
-    copyFileSync("./Lib9c.Wasm/bin/dotnet.d.ts", "generated/wasm/dotnet.d.ts");
+    copyFileSync("./Lib9c.Wasm/bin/dotnet.js", "generated/dotnet.js");
+    copyFileSync("./Lib9c.Wasm/bin/dotnet.js.map", "generated/dotnet.js.map");
+    copyFileSync("./Lib9c.Wasm/bin/dotnet.d.ts", "generated/dotnet.d.ts");
 }
 
 function copyUtilsTs() {

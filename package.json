@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn clean-dotnet; yarn build-wrapper",
     "compile": "yarn build; yarn tsc",
+    "prepare-pack": "yarn compile; rm -rf dist; mkdir dist; cp -r generated/*.{js,d.ts} dist",
     "clean-dotnet": "rm -rf ./Lib9c.Wasm/bin/; dotnet publish",
     "build-wrapper": "ts-node ./generate.ts",
     "generate-docs": "yarn build; typedoc --out docs ./generated/*.ts"
