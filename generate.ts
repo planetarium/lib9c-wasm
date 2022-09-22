@@ -80,7 +80,7 @@ async function main() {
         ts.factory.createReturnStatement(ts.factory.createCallExpression(ts.factory.createIdentifier("dotnet.boot"), undefined, undefined))
     ], true));
 
-    const buildTransactionFunctionImpl = ts.factory.createFunctionDeclaration(modifiers, undefined, "buildTransaction", undefined, [
+    const buildUnsignedTransactionFunctionImpl = ts.factory.createFunctionDeclaration(modifiers, undefined, "buildUnsignedTransaction", undefined, [
         ts.factory.createParameterDeclaration(undefined, undefined, "nonce", undefined, ts.factory.createTypeReferenceNode("number")),
         ts.factory.createParameterDeclaration(undefined, undefined, "publicKey", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
         ts.factory.createParameterDeclaration(undefined, undefined, "signer", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
@@ -98,7 +98,7 @@ async function main() {
 
     const importDecl = ts.factory.createImportDeclaration(undefined, ts.factory.createImportClause(false, ts.factory.createIdentifier("dotnet"), undefined), ts.factory.createStringLiteral("./Lib9c.Wasm/bin/dotnet"));
 
-    const nodeArray = ts.factory.createNodeArray([importDecl, actionTypeIdDecl, ...functionDecls, functionImpl, bootFunctionImpl, buildTransactionFunctionImpl]);
+    const nodeArray = ts.factory.createNodeArray([importDecl, actionTypeIdDecl, ...functionDecls, functionImpl, bootFunctionImpl, buildUnsignedTransactionFunctionImpl]);
     const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
     console.log(result);
 }
