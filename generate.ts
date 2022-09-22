@@ -19,13 +19,9 @@ async function main() {
         actionTypeIdUnionTypeNode // aliased type
     );
 
-    const plainValueTypes: ts.TypeNode[] = [];
-
     function generateBuildActionFunctionParameters(typeId: string): readonly ts.ParameterDeclaration[] {
         const plainValueType = ts.factory.createTypeReferenceNode(dotnet.Lib9c.Wasm.GetAvailableInputs(typeId));
-        plainValueTypes.push(plainValueType);
         return [
-            ts.factory.createParameterDeclaration(undefined, undefined, "typeId", undefined, ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(typeId))),
             ts.factory.createParameterDeclaration(undefined, undefined, "plainValue", undefined, plainValueType),
         ];
     }
@@ -33,24 +29,19 @@ async function main() {
     const modifiers = [ts.factory.createModifier(ts.SyntaxKind.ExportKeyword)];
     const returnType = ts.factory.createTypeReferenceNode("Uint8Array");
     const functionDecls = dotnet.Lib9c.Wasm.GetAllActionTypes().map(typeId => {
-        return ts.factory.createFunctionDeclaration(modifiers, undefined, "buildAction", undefined, generateBuildActionFunctionParameters(typeId), returnType, undefined);
-    });
-    const functionImpl = ts.factory.createFunctionDeclaration(modifiers, undefined, "buildAction", undefined, [
-        ts.factory.createParameterDeclaration(undefined, undefined, "typeId", undefined, ts.factory.createTypeReferenceNode(actionTypeIdDecl.name)),
-        ts.factory.createParameterDeclaration(undefined, undefined, "plainValue", undefined, ts.factory.createUnionTypeNode(plainValueTypes)),
-    ], returnType, ts.factory.createBlock([
-        ts.factory.createReturnStatement(
-            ts.factory.createCallExpression(
-                ts.factory.createIdentifier("dotnet.Lib9c.Wasm.BuildAction"),
-                undefined,
-                [
-                    ts.factory.createIdentifier("typeId"),
-                    ts.factory.createAsExpression(ts.factory.createIdentifier("plainValue"), ts.factory.createTypeReferenceNode("any"))
-                ]
+        return ts.factory.createFunctionDeclaration(modifiers, undefined, typeId, undefined, generateBuildActionFunctionParameters(typeId), returnType, ts.factory.createBlock([
+            ts.factory.createReturnStatement(
+                ts.factory.createCallExpression(
+                    ts.factory.createIdentifier("dotnet.Lib9c.Wasm.BuildAction"),
+                    undefined,
+                    [
+                        ts.factory.createStringLiteral(typeId),
+                        ts.factory.createAsExpression(ts.factory.createIdentifier("plainValue"), ts.factory.createTypeReferenceNode("any"))
+                    ]
+                )
             )
-        )
-    ], true));
-
+        ], true));
+    });
     const bootFunctionImpl = ts.factory.createFunctionDeclaration(modifiers, undefined, "boot", undefined, [], ts.factory.createTypeReferenceNode("Promise<void>"), ts.factory.createBlock([
         ts.factory.createReturnStatement(ts.factory.createCallExpression(ts.factory.createIdentifier("dotnet.boot"), undefined, undefined))
     ], true));
@@ -83,7 +74,7 @@ async function main() {
 
     const importDecl = ts.factory.createImportDeclaration(undefined, ts.factory.createImportClause(false, ts.factory.createIdentifier("dotnet"), undefined), ts.factory.createStringLiteral("./Lib9c.Wasm/bin/dotnet"));
 
-    const nodeArray = ts.factory.createNodeArray([importDecl, actionTypeIdDecl, ...functionDecls, functionImpl, bootFunctionImpl, buildUnsignedTransactionFunctionImpl, attachSignatureFunctionImpl]);
+    const nodeArray = ts.factory.createNodeArray([importDecl, actionTypeIdDecl, ...functionDecls, bootFunctionImpl, buildUnsignedTransactionFunctionImpl, attachSignatureFunctionImpl]);
     const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
     console.log(result);
 }

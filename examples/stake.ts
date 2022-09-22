@@ -1,4 +1,4 @@
-import { buildAction, buildUnsignedTransaction, attachSignature, boot } from "../wrapper";
+import { stake, buildUnsignedTransaction, attachSignature, boot } from "../wrapper";
 import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
@@ -6,8 +6,8 @@ import { createHash } from "crypto";
 async function main() {
     await boot();
 
-    const action = buildAction("stake", {
-        Amount: String(1000n),
+    const action = stake({
+        Amount: String(1000n)
     });
 
     const publicKey = parseHex("0428c66126c62dde22c84cfa55a0578762c95481a81c4b4b2ccf63024b0929bb1bc2ca84f8a4e0bbc164a204bfb86fe38a45af3b86f142585a11d6a03818abe8ca");

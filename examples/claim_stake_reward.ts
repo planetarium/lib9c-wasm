@@ -1,4 +1,4 @@
-import { buildAction, buildUnsignedTransaction, attachSignature, boot } from "../wrapper";
+import { claim_stake_reward, buildUnsignedTransaction, attachSignature, boot } from "../wrapper";
 import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
@@ -6,7 +6,7 @@ import { createHash } from "crypto";
 async function main() {
     await boot();
 
-    const action = buildAction("claim_stake_reward", {
+    const action = claim_stake_reward({
         AvatarAddress: "0x0000000000000000000000000000000000000001",
     });
 

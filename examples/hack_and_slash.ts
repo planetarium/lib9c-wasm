@@ -1,4 +1,4 @@
-import { buildAction, buildUnsignedTransaction, attachSignature, boot } from "../wrapper";
+import { hack_and_slash14, buildUnsignedTransaction, attachSignature, boot } from "../wrapper";
 import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
@@ -6,7 +6,7 @@ import { createHash } from "crypto";
 async function main() {
     await boot();
 
-    const action = buildAction("hack_and_slash14", {
+    const action = hack_and_slash14({
         avatarAddress: "0x2cBaDf26574756119cF705289C33710F27443767",
         costumes: [],
         equipments: [],
