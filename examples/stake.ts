@@ -1,4 +1,7 @@
-import { stake, buildUnsignedTransaction, attachSignature, boot } from "../wrapper";
+import { stake } from "../generated/actions";
+import { buildUnsignedTransaction, attachSignature } from "../generated/tx";
+import { boot } from "../generated";
+
 import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";

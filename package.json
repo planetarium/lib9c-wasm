@@ -7,8 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn clean-dotnet; yarn build-wrapper",
     "clean-dotnet": "rm -rf ./Lib9c.Wasm/bin/; dotnet publish",
-    "build-wrapper": "ts-node ./generate.ts > wrapper.ts",
-    "generate-docs": "yarn build; typedoc --out docs ./wrapper.ts"
+    "build-wrapper": "ts-node ./generate.ts",
+    "generate-docs": "yarn build; typedoc --out docs ./generated/*.ts"
   },
   "repository": {
     "type": "git",

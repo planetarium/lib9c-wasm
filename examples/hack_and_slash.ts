@@ -1,4 +1,7 @@
-import { hack_and_slash14, buildUnsignedTransaction, attachSignature, boot } from "../wrapper";
+import { hack_and_slash14 } from "../generated/actions";
+import { buildUnsignedTransaction, attachSignature } from "../generated/tx";
+import { boot } from "../generated";
+
 import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
