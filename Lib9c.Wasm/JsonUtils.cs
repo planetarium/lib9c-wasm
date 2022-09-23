@@ -113,49 +113,26 @@ public static class JsonUtils
 
     public static string ResolveType(Type type, string fieldName = "")
     {
-        if (type == typeof(System.String))
+        var typeToResolvedType = new Dictionary<Type, string>
         {
-            return "string";
-        }
+            [typeof(System.String)] = "string",
+            [typeof(System.Guid)] = "string",
+            [typeof(Libplanet.Address)] = "string",
+            [typeof(Libplanet.Assets.FungibleAssetValue)] = "string",
 
-        if (type == typeof(System.Guid))
-        {
-            return "string";
-        }
+            [typeof(System.Numerics.BigInteger)] = "string",
 
-        if (type == typeof(Libplanet.Address))
-        {
-            return "string";
-        }
+            [typeof(System.Boolean)] = "boolean",
 
-        if (type == typeof(System.Boolean))
-        {
-            return "boolean";
-        }
+            [typeof(System.Byte[])] = "Uint8Array",
 
-        if (type == typeof(System.Numerics.BigInteger))
-        {
-            return "string";
-        }
+            [typeof(System.Int32)] = "number",
+            [typeof(System.Int64)] = "number",
+        };
 
-        if (type == typeof(System.Int32))
+        if (typeToResolvedType.TryGetValue(type, out string value))
         {
-            return "number";
-        }
-
-        if (type == typeof(System.Int64))
-        {
-            return "number";
-        }
-
-        if (type == typeof(System.Byte[]))
-        {
-            return "Uint8Array";
-        }
-
-        if (type == typeof(Libplanet.Assets.FungibleAssetValue))
-        {
-            return "string";
+            return value;
         }
 
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Libplanet.HashDigest<>))
