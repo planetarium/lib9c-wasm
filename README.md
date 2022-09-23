@@ -1,5 +1,17 @@
 # lib9c-wasm
+[![npm version](https://badge.fury.io/js/lib9c-wasm.svg)](https://npmjs.com/package/lib9c-wasm)
+
 The experimental project to part Lib9c into JavaScript environment through WASM.
+
+## Installation
+
+```
+# yarn
+yarn add lib9c-wasm
+
+# npm
+npm install lib9c-wasm
+```
 
 ## Examples
 
@@ -34,6 +46,14 @@ You can run example with the below steps:
 ```
 yarn build
 yarn ts-node example_stake.ts
+```
+
+### Publish
+
+```
+yarn prepare-pack
+yarn custom-pack
+yarn publish lib9c-wasm*.tgz
 ```
 
 ### Generate docs
