@@ -1,6 +1,7 @@
 import { hack_and_slash14 } from "../generated/actions";
 import { buildUnsignedTransaction, attachSignature } from "../generated/tx";
 import { boot } from "../generated";
+import { Address } from "../generated/utils";
 
 import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
@@ -10,7 +11,7 @@ async function main() {
     await boot();
 
     const action = hack_and_slash14({
-        avatarAddress: "0x2cBaDf26574756119cF705289C33710F27443767",
+        avatarAddress: new Address("0x2cBaDf26574756119cF705289C33710F27443767"),
         costumes: [],
         equipments: [],
         foods: [],

@@ -43,12 +43,36 @@ function generateActionsTsFile() {
         ];
     }
 
+    const typesImportDecl = ts.factory.createImportDeclaration(undefined, ts.factory.createImportClause(false, undefined, ts.factory.createNamedImports([
+        ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("Address")),
+        ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("Guid")),
+        ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("serializeObjectAsDotnet")),
+    ])), ts.factory.createStringLiteral("./utils"));
+
     const returnType = ts.factory.createTypeReferenceNode("Uint8Array");
+    const buildActionWrapperImplDecl = ts.factory.createFunctionDeclaration(undefined, undefined, "buildActionWrapper", undefined, [
+        ts.factory.createParameterDeclaration(undefined, undefined, "typeId", undefined, ts.factory.createTypeReferenceNode("string")),
+        ts.factory.createParameterDeclaration(undefined, undefined, "plainValue", undefined, ts.factory.createTypeReferenceNode("object")),
+    ], returnType, ts.factory.createBlock([
+        ts.factory.createReturnStatement(
+            ts.factory.createCallExpression(
+                ts.factory.createIdentifier("dotnet.Lib9c.Wasm.BuildAction"),
+                undefined,
+                [
+                    ts.factory.createIdentifier("typeId"),
+                    ts.factory.createAsExpression(
+                        ts.factory.createCallExpression(ts.factory.createIdentifier("serializeObjectAsDotnet"), [], [ts.factory.createIdentifier("plainValue")]),
+                        ts.factory.createTypeReferenceNode("any"))
+                ]
+            )
+        )
+    ], true));
+
     const actionsFunctionDecls = dotnet.Lib9c.Wasm.GetAllActionTypes().map(typeId => {
         return ts.factory.createFunctionDeclaration(exportModifiers, undefined, typeId, undefined, generateBuildActionFunctionParameters(typeId), returnType, ts.factory.createBlock([
             ts.factory.createReturnStatement(
                 ts.factory.createCallExpression(
-                    ts.factory.createIdentifier("dotnet.Lib9c.Wasm.BuildAction"),
+                    ts.factory.createIdentifier("buildActionWrapper"),
                     undefined,
                     [
                         ts.factory.createStringLiteral(typeId),
@@ -59,7 +83,7 @@ function generateActionsTsFile() {
         ], true));
     });
 
-    const nodeArray = ts.factory.createNodeArray([importDecl, ...actionsFunctionDecls]);
+    const nodeArray = ts.factory.createNodeArray([importDecl, typesImportDecl, buildActionWrapperImplDecl, ...actionsFunctionDecls]);
     const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
 
     writeFileSync("./generated/actions.ts", result);

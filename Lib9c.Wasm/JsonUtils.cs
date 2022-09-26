@@ -128,6 +128,9 @@ public static class JsonUtils
 
             [typeof(System.Int32)] = "number",
             [typeof(System.Int64)] = "number",
+
+            [typeof(System.Guid)] = "Guid",
+            [typeof(Libplanet.Address)] = "Address",
         };
 
         if (typeToResolvedType.TryGetValue(type, out string value))
