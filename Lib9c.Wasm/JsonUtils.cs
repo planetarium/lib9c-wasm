@@ -152,11 +152,6 @@ public static class JsonUtils
             return "string";
         }
 
-        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>))
-        {
-            return ResolveType(type.GetGenericArguments()[0], fieldName + "'s nullable type arg") + " | null";
-        }
-
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Generic.List<>))
         {
             return ResolveType(type.GetGenericArguments()[0], fieldName + "'s list type arg") + "[]";
@@ -211,16 +206,22 @@ public static class JsonUtils
                     || type.Name.EndsWith("Digest");
             }
 
+            NullabilityInfoContext context = new ();
+
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredType(f.FieldType) && f.IsPublic);
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => !IsIgnoredType(p.PropertyType) && p.CanWrite);
             foreach (var f in fields)
             {
-                builder.Append($"{f.Name}: {ResolveType(f.FieldType, f.Name)};");
+                var info = context.Create(f);
+                var nullableSuffix = info.ReadState is NullabilityState.Nullable ? "| null" : "";
+                builder.Append($"{f.Name}: {ResolveType(f.FieldType, f.Name)}{nullableSuffix};");
             }
 
             foreach (var p in properties)
             {
-                builder.Append($"{p.Name}: {ResolveType(p.PropertyType, p.Name)};");
+                var info = context.Create(p);
+                var nullableSuffix = info.ReadState is NullabilityState.Nullable ? "| null" : "";
+                builder.Append($"{p.Name}: {ResolveType(p.PropertyType, p.Name)}{nullableSuffix};");
             }
 
             builder.Append("}");
