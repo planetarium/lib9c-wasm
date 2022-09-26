@@ -1,9 +1,8 @@
 import { buy12 } from "../generated/actions";
 import { buildUnsignedTransaction, attachSignature } from "../generated/tx";
 import { boot } from "../generated";
-import { Address, Guid } from "../generated/utils";
+import { parseHex, toHex, Address, Guid } from "../generated/utils";
 
-import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
 
