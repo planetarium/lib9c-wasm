@@ -1,4 +1,4 @@
-import uuid from "uuid";
+import { validate as validateUUID } from "uuid";
 import { isAddress } from "@ethersproject/address"
 
 export function parseHex(hex: string): Uint8Array {
@@ -15,7 +15,7 @@ interface DotnetType {
 
 export class Guid implements DotnetType {
     constructor(private readonly raw: string) {
-        if (!uuid.validate(raw)) {
+        if (!validateUUID(raw)) {
             throw new Error("Not suitable for Guid");
         }
     }
