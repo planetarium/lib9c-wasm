@@ -15,7 +15,6 @@ async function main() {
             OrderId: new Guid("0525715e-eb08-44f7-a851-535ed1f19d83"),
             TradableId: new Guid("0df85ccb-b4f0-4af5-ae3d-ff7ea95ebf60"),
         }],
-        errors: [],
     });
 
     const publicKey = parseHex("0428c66126c62dde22c84cfa55a0578762c95481a81c4b4b2ccf63024b0929bb1bc2ca84f8a4e0bbc164a204bfb86fe38a45af3b86f142585a11d6a03818abe8ca");

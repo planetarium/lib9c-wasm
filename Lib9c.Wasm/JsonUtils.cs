@@ -197,6 +197,11 @@ public static class JsonUtils
             StringBuilder builder = new StringBuilder();
             builder.Append("{");
 
+            bool IsIgnoredVariableName(string name)
+            {
+                return name == "errors";
+            }
+
             bool IsIgnoredType(Type type)
             {
                 return type.Name.EndsWith("BattleLog")
@@ -208,8 +213,8 @@ public static class JsonUtils
 
             NullabilityInfoContext context = new ();
 
-            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredType(f.FieldType) && f.IsPublic);
-            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => !IsIgnoredType(p.PropertyType) && p.CanWrite);
+            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredVariableName(f.Name) && !IsIgnoredType(f.FieldType) && f.IsPublic);
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => !IsIgnoredVariableName(p.Name) && !IsIgnoredType(p.PropertyType) && p.CanWrite);
             foreach (var f in fields)
             {
                 var info = context.Create(f);
