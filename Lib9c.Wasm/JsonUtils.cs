@@ -79,9 +79,20 @@ public static class JsonUtils
         {
             Type elementType = targetType.GetGenericArguments()[0];
             IList list = (IList)Activator.CreateInstance(targetType);
-            foreach (var item in element.EnumerateArray())
+            foreach (var item in element.EnumerateObject())
             {
-                list.Add(ConvertJsonElementTo(item, elementType));
+                list.Add(ConvertJsonElementTo(item.Value, elementType));
+            }
+            return list;
+        }
+
+        if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(IEnumerable<>))
+        {
+            Type elementType = targetType.GetGenericArguments()[0];
+            IList list = (IList)Activator.CreateInstance(typeof(List<>).MakeGenericType(elementType));
+            foreach (var item in element.EnumerateObject())
+            {
+                list.Add(ConvertJsonElementTo(item.Value, elementType));
             }
             return list;
         }
@@ -116,8 +127,6 @@ public static class JsonUtils
         var typeToResolvedType = new Dictionary<Type, string>
         {
             [typeof(System.String)] = "string",
-            [typeof(System.Guid)] = "string",
-            [typeof(Libplanet.Address)] = "string",
             [typeof(Libplanet.Assets.FungibleAssetValue)] = "string",
 
             [typeof(System.Numerics.BigInteger)] = "string",
