@@ -28,12 +28,12 @@ You can see examples in the TypeScript source files under the `/examples` direct
 ### Git clone
 
 ```
-git clone --recurse-submodules https://github.com/moreal/lib9c-wasm
+git clone --recurse-submodules https://github.com/planetarium/lib9c-wasm
 ```
 
 ### Build
 
-You can get `wrapper.ts` by using the below command:
+You can generate codes under the `generated/*` by using the below command:
 
 ```
 yarn build
@@ -45,7 +45,7 @@ You can run example with the below steps:
 
 ```
 yarn build
-yarn ts-node example_stake.ts
+yarn ts-node examples/stake.ts
 ```
 
 ### Publish
