@@ -11,7 +11,7 @@
     "custom-pack": "pushd dist; npm pack; mv lib9c-wasm-*.tgz ..; popd",
     "clean-dotnet": "rm -rf ./Lib9c.Wasm/bin/; dotnet publish",
     "build-wrapper": "ts-node ./generate.ts",
-    "generate-docs": "yarn build; typedoc --out docs ./generated/*.ts"
+    "generate-docs": "yarn build; typedoc --out docs ./generated/*.ts --exclude generated/wasm/** --exclude generated/dotnet*"
   },
   "repository": {
     "type": "git",
