@@ -1,16 +1,29 @@
-import { stake } from "../generated/actions";
+import { transfer_asset2 } from "../generated/actions";
 import { buildUnsignedTransaction, attachSignature } from "../generated/tx";
 import { boot } from "../generated";
 
 import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
+import { Address } from "../generated/utils";
 
 async function main() {
     await boot();
 
-    const action = stake({
-        amount: String(1000n)
+    const action = transfer_asset2({
+        amount: {
+            currency: {
+                ticker: "NCG",
+                decimalPlaces: 2,
+                minters: []
+            },
+            sign: 1,
+            majorUnit: "10",
+            minorUnit: "10"
+        },
+        sender: new Address("0x2cBaDf26574756119cF705289C33710F27443767"),
+        recipient: new Address("0x2cBaDf26574756119cF705289C33710F27443767"),
+        memo: "MY MEMO",
     });
 
     const publicKey = parseHex("0428c66126c62dde22c84cfa55a0578762c95481a81c4b4b2ccf63024b0929bb1bc2ca84f8a4e0bbc164a204bfb86fe38a45af3b86f142585a11d6a03818abe8ca");

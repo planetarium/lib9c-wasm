@@ -1,7 +1,7 @@
 import { claim_stake_reward } from "../generated/actions";
 import { buildUnsignedTransaction, attachSignature } from "../generated/tx";
 import { boot } from "../generated";
-import { Address } from "../generated/utils";
+import { Address, Guid } from "../generated/utils";
 
 import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
@@ -11,7 +11,7 @@ async function main() {
     await boot();
 
     const action = claim_stake_reward({
-        AvatarAddress: new Address("0x0000000000000000000000000000000000000001"),
+        avatarAddress: new Address("0x0000000000000000000000000000000000000001"),
     });
 
     const publicKey = parseHex("0428c66126c62dde22c84cfa55a0578762c95481a81c4b4b2ccf63024b0929bb1bc2ca84f8a4e0bbc164a204bfb86fe38a45af3b86f142585a11d6a03818abe8ca");

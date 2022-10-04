@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 using Bencodex;
 using Libplanet.Action;
 using Microsoft.JSInterop;
@@ -16,7 +17,7 @@ public class Program
     public static string[] GetAllActionTypes()
     {
         var types = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
-            .Where(t => t.IsDefined(typeof(ActionTypeAttribute)));
+            .Where(t => t.IsDefined(typeof(ActionTypeAttribute)) && t != typeof(InitializeStates) && t != typeof(CreatePendingActivations));
         return types.Select(x => ActionTypeAttribute.ValueOf(x)).ToArray();
     }
 
@@ -32,14 +33,12 @@ public class Program
     }
 
     [JSInvokable]
-    public static byte[] BuildAction(string actionTypeString, Dictionary<string, object> dictionary)
+    public static byte[] BuildAction(string actionTypeString, JsonElement dictionary)
     {
         Type actionType = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
             .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) == actionTypeString);
 
-        IAction action = (IAction)Activator.CreateInstance(actionType);
-        FillFieldsFromJsonElements(actionType, action, dictionary);
-
+        var action = (IAction)ConvertJsonElementTo(dictionary, actionType);
         return new Codec().Encode(((PolymorphicAction<ActionBase>)(dynamic)action).PlainValue);
     }
 

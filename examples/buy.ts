@@ -12,8 +12,23 @@ async function main() {
     const action = buy12({
         buyerAvatarAddress: new Address("0xab51b5ac8778a0f00d340b1db07fe68de41fbc1d"),
         purchaseInfos: [{
-            OrderId: new Guid("0525715e-eb08-44f7-a851-535ed1f19d83"),
-            TradableId: new Guid("0df85ccb-b4f0-4af5-ae3d-ff7ea95ebf60"),
+            orderId: new Guid("0525715e-eb08-44f7-a851-535ed1f19d83"),
+            avatarAddress: new Address("0xab51b5ac8778a0f00d340b1db07fe68de41fbc1d"),
+            agentAddress: new Address("0xab51b5ac8778a0f00d340b1db07fe68de41fbc1d"),
+            type: "Food",
+            tradableId: new Guid("0525715e-eb08-44f7-a851-535ed1f19d83"),
+            itemPrice: {
+                currency: {
+                    ticker: "NCG",
+                    decimalPlaces: 2,
+                    minters: [
+                        new Address("0x47d082a115c63e7b58b1532d20e631538eafadde")
+                    ]
+                },
+                sign: 1,
+                majorUnit: "10000",
+                minorUnit: "11"
+            },
         }],
     });
 

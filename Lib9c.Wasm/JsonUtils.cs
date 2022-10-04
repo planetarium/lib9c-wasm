@@ -1,44 +1,16 @@
 using System.Collections;
 using System.Numerics;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
 using Libplanet;
+using Libplanet.Assets;
 
 namespace Lib9c.Wasm;
 public static class JsonUtils
 {
-    public static void FillFieldsFromJsonElements(Type type, object instance, Dictionary<string, object> dictionary)
-    {
-        var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
-        foreach (var pair in dictionary)
-        {
-            if (type.GetField(pair.Key, flags) is { } field)
-            {
-                var value = pair.Value switch
-                {
-                    null => null,
-                    JsonElement element => ConvertJsonElementTo(element, field.FieldType),
-                    _ => throw new ArgumentException(),
-                };
-                field.SetValue(instance, value);
-            }
-            else if (type.GetProperty(pair.Key, flags) is { } property)
-            {
-                var value = pair.Value switch
-                {
-                    null => null,
-                    JsonElement element => ConvertJsonElementTo(element, property.PropertyType),
-                    _ => throw new ArgumentException(),
-                };
-                property.SetValue(instance, value);
-            }
-            else
-            {
-                throw new Exception($"{pair.Key} is not found in {type}");
-            }
-        }
-    }
+    private static Dictionary<Type, string> _typesCache = new Dictionary<Type, string>();
 
     public static object ConvertJsonElementTo(JsonElement element, Type targetType)
     {
@@ -69,10 +41,34 @@ public static class JsonUtils
             return element.GetString() ?? throw new ArgumentNullException();
         }
 
+        if (targetType == typeof(byte))
+        {
+            return element.GetByte();
+        }
+
         if (targetType == typeof(Address))
         {
             string addressString = element.GetString() ?? throw new ArgumentNullException();
             return new Address(addressString.Replace("0x", ""));
+        }
+
+        if (targetType.IsGenericType && targetType == typeof(System.Collections.Immutable.IImmutableSet<Address>))
+        {
+            var set = System.Collections.Immutable.ImmutableHashSet<Address>.Empty;
+            foreach (var el in element.EnumerateObject())
+            {
+                set = set.Add((Address)ConvertJsonElementTo(el.Value, typeof(Address)));
+            }
+
+            return set;
+        }
+
+        if (element.ValueKind == JsonValueKind.Object &&
+            (targetType.IsClass || targetType.IsValueType) &&
+            targetType.GetConstructors()
+                .Where(ctr => ctr.GetParameters().Length == element.EnumerateObject().Count()).FirstOrDefault() is { } constructor)
+        {
+            return constructor.Invoke(constructor.GetParameters().Select(parameter => ConvertJsonElementTo(element.GetProperty(parameter.Name), parameter.ParameterType)).ToArray());
         }
 
         if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(List<>))
@@ -97,6 +93,21 @@ public static class JsonUtils
             return list;
         }
 
+        if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(Nullable<>))
+        {
+            if (element.ValueKind == JsonValueKind.Null)
+            {
+                return null;
+            }
+
+            return Convert.ChangeType(ConvertJsonElementTo(element, targetType.GetGenericArguments()[0]), targetType);
+        }
+
+        if (targetType.IsEnum)
+        {
+            return Enum.Parse(targetType, element.GetString());
+        }
+
         if (element.ValueKind == JsonValueKind.Object)
         {
             var instance = Activator.CreateInstance(targetType);
@@ -104,11 +115,11 @@ public static class JsonUtils
             {
                 if (targetType.GetProperty(property.Name) is { } prop)
                 {
-                    prop.SetValue(property.Name, ConvertJsonElementTo(property.Value, prop.PropertyType));
+                    prop.SetValue(instance, ConvertJsonElementTo(property.Value, prop.PropertyType));
                 }
                 else if (targetType.GetField(property.Name) is { } field)
                 {
-                    field.SetValue(property.Name, ConvertJsonElementTo(property.Value, field.FieldType));
+                    field.SetValue(instance, ConvertJsonElementTo(property.Value, field.FieldType));
                 }
                 else
                 {
@@ -124,19 +135,30 @@ public static class JsonUtils
 
     public static string ResolveType(Type type, string fieldName = "")
     {
+        if (!_typesCache.ContainsKey(type))
+        {
+            _typesCache[type] = ResolveTypeImpl(type, fieldName);
+        }
+
+        return _typesCache[type];
+    }
+
+    public static string ResolveTypeImpl(Type type, string fieldName = "")
+    {
         var typeToResolvedType = new Dictionary<Type, string>
         {
             [typeof(System.String)] = "string",
-            [typeof(Libplanet.Assets.FungibleAssetValue)] = "string",
-
-            [typeof(System.Numerics.BigInteger)] = "string",
+            [typeof(System.Numerics.BigInteger)] = "string",  // JSON doesn't support bigint
 
             [typeof(System.Boolean)] = "boolean",
 
             [typeof(System.Byte[])] = "Uint8Array",
 
+            [typeof(System.Byte)] = "number",
+
             [typeof(System.Int32)] = "number",
             [typeof(System.Int64)] = "number",
+            [typeof(System.Decimal)] = "number",
 
             [typeof(System.Guid)] = "Guid",
             [typeof(Libplanet.Address)] = "Address",
@@ -145,6 +167,11 @@ public static class JsonUtils
         if (typeToResolvedType.TryGetValue(type, out string value))
         {
             return value;
+        }
+
+        if (type.IsAssignableTo(typeof(Bencodex.Types.IValue)))
+        {
+            return "\"BencodexValue\"";
         }
 
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Libplanet.HashDigest<>))
@@ -177,9 +204,19 @@ public static class JsonUtils
             return "Map<" + ResolveType(type.GetGenericArguments()[0], fieldName + "'s Dictionary key type arg") + ", " + ResolveType(type.GetGenericArguments()[1], fieldName + "'s Dictionary value type arg") + ">";
         }
 
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Generic.IReadOnlyDictionary<,>))
+        {
+            return "Map<" + ResolveType(type.GetGenericArguments()[0], fieldName + "'s IReadOnlyDictionary key type arg") + ", " + ResolveType(type.GetGenericArguments()[1], fieldName + "'s IReadOnlyDictionary value type arg") + ">";
+        }
+
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Immutable.IImmutableSet<>))
         {
             return ResolveType(type.GetGenericArguments()[0], fieldName + "'s IImmutableSet type arg") + "[]";
+        }
+
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Immutable.ImmutableHashSet<>))
+        {
+            return ResolveType(type.GetGenericArguments()[0], fieldName + "'s ImmutableSet type arg") + "[]";
         }
 
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.ValueTuple<>))
@@ -192,16 +229,43 @@ public static class JsonUtils
             return string.Join(" | ", type.GetEnumNames().Select(x => $"\"{x}\""));
         }
 
+        if (type.IsInterface || type.IsAbstract)
+        {
+            return string.Join(" | ", type.Assembly.GetTypes().Where(t => t.IsAssignableTo(type) && !t.IsAbstract && !t.IsInterface).Select(t => ResolveType(t)));
+        }
+
         if (type.IsValueType || type.IsClass)
         {
             StringBuilder builder = new StringBuilder();
             builder.Append("{");
 
+            if (type.GetConstructors().Where(ctr =>
+                    ctr.GetParameters().Length > 0 &&
+                    !(ctr.GetParameters().Length == 1 && typeof(Bencodex.Types.IValue).IsAssignableFrom(ctr.GetParameters().First().ParameterType)) &&
+                    !(ctr.GetParameters().Length == 2 && ctr.GetParameters().First().ParameterType == typeof(SerializationInfo) && ctr.GetParameters().Skip(1).First().ParameterType == typeof(StreamingContext))
+                ).OrderByDescending(x => x.GetParameters().Length).FirstOrDefault() is { } constructor)
+            {
+                foreach (var parameter in constructor.GetParameters())
+                {
+                    if (type.IsAssignableTo(typeof(Nekoyume.Action.GameAction)) && parameter.Name == nameof(Nekoyume.Action.GameAction.Id))
+                    {
+                        continue;
+                    }
+
+                    builder.Append($"{parameter.Name}: {ResolveType(parameter.ParameterType)};");
+                }
+
+                builder.Append("}");
+
+                return builder.ToString();
+            }
+
             bool IsIgnoredVariableName(string name)
             {
                 return name == "errors"
                     || name == "PlainValue"
-                    || name == "PlainValueInternal";
+                    || name == "PlainValueInternal"
+                    || name.StartsWith("Extra");
             }
 
             bool IsIgnoredType(Type type)
@@ -221,11 +285,17 @@ public static class JsonUtils
             {
                 var info = context.Create(f);
                 var nullableSuffix = info.ReadState is NullabilityState.Nullable ? "| null" : "";
-                builder.Append($"{f.Name}: {ResolveType(f.FieldType, f.Name)}{nullableSuffix};");
+                var innerType = f.FieldType.IsGenericType && f.FieldType.GetGenericTypeDefinition() == typeof(Nullable<>) ? f.FieldType.GetGenericArguments()[0] : f.FieldType;
+                builder.Append($"{f.Name}: {ResolveType(innerType, f.Name)}{nullableSuffix};");
             }
 
             foreach (var p in properties)
             {
+                if (type.IsAssignableTo(typeof(Nekoyume.Action.GameAction)) && p.Name == nameof(Nekoyume.Action.GameAction.Id))
+                {
+                    continue;
+                }
+
                 if (p.Name.IndexOf(".") != -1) {
                     continue;
                 }
