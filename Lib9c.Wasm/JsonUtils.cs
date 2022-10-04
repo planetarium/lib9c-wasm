@@ -199,7 +199,9 @@ public static class JsonUtils
 
             bool IsIgnoredVariableName(string name)
             {
-                return name == "errors";
+                return name == "errors"
+                    || name == "PlainValue"
+                    || name == "PlainValueInternal";
             }
 
             bool IsIgnoredType(Type type)
@@ -213,8 +215,8 @@ public static class JsonUtils
 
             NullabilityInfoContext context = new ();
 
-            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredVariableName(f.Name) && !IsIgnoredType(f.FieldType) && f.IsPublic);
-            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => !IsIgnoredVariableName(p.Name) && !IsIgnoredType(p.PropertyType) && p.CanWrite);
+            var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredVariableName(f.Name) && !IsIgnoredType(f.FieldType));
+            var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => !IsIgnoredVariableName(p.Name) && !IsIgnoredType(p.PropertyType));
             foreach (var f in fields)
             {
                 var info = context.Create(f);
@@ -224,6 +226,10 @@ public static class JsonUtils
 
             foreach (var p in properties)
             {
+                if (p.Name.IndexOf(".") != -1) {
+                    continue;
+                }
+
                 var info = context.Create(p);
                 var nullableSuffix = info.ReadState is NullabilityState.Nullable ? "| null" : "";
                 builder.Append($"{p.Name}: {ResolveType(p.PropertyType, p.Name)}{nullableSuffix};");
