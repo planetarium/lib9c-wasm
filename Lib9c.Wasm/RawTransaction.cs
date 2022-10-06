@@ -11,13 +11,13 @@ public record RawTransaction(long nonce, byte[] publicKey, byte[] signer, byte[]
         return Bencodex.Types.Dictionary.Empty
             .Add(NonceKey, nonce)
             .Add(SignerKey, signer)
-            .Add(UpdatedAddressesKey, new Bencodex.Types.IValue[0])
+            .Add(UpdatedAddressesKey, Bencodex.Types.List.Empty)
             .Add(PublicKeyKey, publicKey)
             .Add(GenesisHashKey, genesisHash)
             .Add(
                 TimestampKey,
                 timestamp.ToString(TimestampFormat, CultureInfo.InvariantCulture))
-            .Add(ActionsKey, new Bencodex.Types.IValue[] { new Bencodex.Codec().Decode(action) })
+            .Add(ActionsKey, Bencodex.Types.List.Empty.Add(new Bencodex.Codec().Decode(action)))
             .Add(SignatureKey, signature);
     }
 

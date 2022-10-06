@@ -1,3 +1,6 @@
 [submodule "lib9c"]
 	path = lib9c
 	url = https://github.com/planetarium/lib9c
+[submodule "libplanet"]
+	path = libplanet
+	url = https://github.com/planetarium/libplanet.git

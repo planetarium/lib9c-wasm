@@ -23,7 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Lib9c.Wasm\Lib9c.Wasm.csproj" />
-    <ProjectReference Include="..\lib9c\.Libplanet\Libplanet\Libplanet.csproj" />
+    <ProjectReference Include="..\libplanet\Libplanet\Libplanet.csproj" />
   </ItemGroup>
 
 </Project>

@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\lib9c\Lib9c\Lib9c.csproj" />
+    <ProjectReference Include="..\libplanet\Libplanet\Libplanet.csproj" />
 
     <PackageReference Include="DotNetJS" Version="*"/>
   </ItemGroup>

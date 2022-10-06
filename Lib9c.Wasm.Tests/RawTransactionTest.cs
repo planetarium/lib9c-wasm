@@ -1,5 +1,6 @@
 using System.Globalization;
 using Libplanet;
+using Libplanet.Action;
 using Libplanet.Blocks;
 using Libplanet.Crypto;
 using Nekoyume.Action;
@@ -29,6 +30,6 @@ public class RawTransactionTest
         Assert.Equal(timestamp, tx.Timestamp);
         Assert.Equal(genesisHash, tx.GenesisHash);
         Assert.Equal(signature, tx.Signature);
-        var action = Assert.IsType<Stake>(Assert.Single(tx.Actions).InnerAction);
+        Assert.IsType<Stake>(Assert.IsType<PolymorphicAction<ActionBase>>(Assert.Single(tx.Actions)).InnerAction);
     }
 }
