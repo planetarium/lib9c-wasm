@@ -1,7 +1,7 @@
 import { buy12 } from "../generated/actions";
 import { buildUnsignedTransaction, attachSignature } from "../generated/tx";
 import { boot } from "../generated";
-import { parseHex, toHex, Address, Guid } from "../generated/utils";
+import { parseHex, toHex, Address, Guid, Currency } from "../generated/utils";
 
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
@@ -18,13 +18,13 @@ async function main() {
             type: "Food",
             tradableId: new Guid("0525715e-eb08-44f7-a851-535ed1f19d83"),
             itemPrice: {
-                currency: {
+                currency: new Currency({
                     ticker: "NCG",
                     decimalPlaces: 2,
                     minters: [
                         new Address("0x47d082a115c63e7b58b1532d20e631538eafadde")
                     ]
-                },
+                }),
                 sign: 1,
                 majorUnit: "10000",
                 minorUnit: "11"

@@ -37,6 +37,22 @@ export class Address implements DotnetType {
     }
 }
 
+export class Currency implements DotnetType {
+    constructor(private readonly value: {
+        ticker: string,
+        decimalPlaces: number,
+        minters?: Address[],
+    }) {
+    }
+
+    serializeAsDotnet() {
+        return {
+            ...this.value,
+            minters: this.value.minters?.map(addr => addr.serializeAsDotnet()),
+        };
+    }
+}
+
 export function serializeObjectAsDotnet(obj: Object): Object {
     if (!(obj instanceof Object)) {
         return obj;
@@ -47,6 +63,10 @@ export function serializeObjectAsDotnet(obj: Object): Object {
     }
 
     if (obj instanceof Guid) {
+        return obj.serializeAsDotnet();
+    }
+
+    if (obj instanceof Currency) {
         return obj.serializeAsDotnet();
     }
 

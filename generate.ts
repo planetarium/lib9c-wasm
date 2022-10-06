@@ -46,6 +46,7 @@ function generateActionsTsFile() {
     const typesImportDecl = ts.factory.createImportDeclaration(undefined, ts.factory.createImportClause(false, undefined, ts.factory.createNamedImports([
         ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("Address")),
         ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("Guid")),
+        ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("Currency")),
         ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("serializeObjectAsDotnet")),
     ])), ts.factory.createStringLiteral("./utils"));
 

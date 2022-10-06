@@ -5,18 +5,18 @@ import { boot } from "../generated";
 import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
-import { Address } from "../generated/utils";
+import { Address, Currency } from "../generated/utils";
 
 async function main() {
     await boot();
 
     const action = transfer_asset2({
         amount: {
-            currency: {
+            currency: new Currency({
                 ticker: "NCG",
                 decimalPlaces: 2,
                 minters: []
-            },
+            }),
             sign: 1,
             majorUnit: "10",
             minorUnit: "10"

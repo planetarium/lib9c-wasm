@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Immutable;
 using System.Numerics;
 using System.Reflection;
 using System.Runtime.Serialization;
@@ -39,6 +40,19 @@ public static class JsonUtils
         if (targetType == typeof(string))
         {
             return element.GetString() ?? throw new ArgumentNullException();
+        }
+
+        if (targetType == typeof(Libplanet.Assets.Currency))
+        {
+#pragma warning disable CS0618
+            return Currency.Legacy(
+                element.GetProperty("ticker").GetString(),
+                element.GetProperty("decimalPlaces").GetByte(),
+                element.TryGetProperty("minters", out var minters)
+                    ? minters.EnumerateArray()
+                        .Select(value => ConvertJsonElementTo(value, typeof(Address))).Cast<Address>().ToImmutableHashSet()
+                    : null);
+#pragma warning restore CS0618
         }
 
         if (targetType == typeof(byte))
@@ -162,6 +176,7 @@ public static class JsonUtils
 
             [typeof(System.Guid)] = "Guid",
             [typeof(Libplanet.Address)] = "Address",
+            [typeof(Libplanet.Assets.Currency)] = "Currency",
         };
 
         if (typeToResolvedType.TryGetValue(type, out string value))
