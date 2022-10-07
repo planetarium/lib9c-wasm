@@ -19,6 +19,7 @@ async function main() {
     generateIndexTsFile();
     generateActionsTsFile();
     generateTxTsFile();
+    generateStatesTsFile();
 
     copyLib9cWasmFiles();
     copyUtilsTs();
@@ -121,6 +122,31 @@ function generateTxTsFile() {
     const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
 
     writeFileSync("./generated/tx.ts", result);
+}
+
+function generateStatesTsFile() {
+    const stateTypeUnionType = ts.factory.createUnionTypeNode(dotnet.Lib9c.Wasm.ListAllStates().map(t => ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(t))));
+    const uint8ArrayType = ts.factory.createTypeReferenceNode("Uint8Array");
+    const deserializeStateWrapperDecl = ts.factory.createFunctionDeclaration(exportModifiers, undefined, "deserializeState", undefined, [
+        ts.factory.createParameterDeclaration(undefined, undefined, "type", undefined, stateTypeUnionType),
+        ts.factory.createParameterDeclaration(undefined, undefined, "bytes", undefined, uint8ArrayType),
+    ], uint8ArrayType, ts.factory.createBlock([
+        ts.factory.createReturnStatement(
+            ts.factory.createCallExpression(
+                ts.factory.createIdentifier("dotnet.Lib9c.Wasm.DeserializeState"),
+                undefined,
+                [
+                    ts.factory.createIdentifier("type"),
+                    ts.factory.createIdentifier("bytes"),
+                ]
+            )
+        )
+    ], true));
+
+    const nodeArray = ts.factory.createNodeArray([importDecl, deserializeStateWrapperDecl]);
+    const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
+
+    writeFileSync("./generated/states.ts", result);
 }
 
 function copyLib9cWasmFiles() {
