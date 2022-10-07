@@ -1,6 +1,7 @@
 using System.Reflection;
 using System.Text.Json;
 using Bencodex;
+using DotNetJS;
 using Libplanet.Action;
 using Microsoft.JSInterop;
 using Nekoyume.Action;
@@ -9,7 +10,12 @@ using static Lib9c.Wasm.JsonUtils;
 namespace Lib9c.Wasm;
 public class Program
 {
-    public static void Main() { }
+    public static void Main()
+    {
+        JS.Runtime.ConfigureJson(options => {
+            options.IncludeFields = true;
+        });
+    }
 
     public record Input(string Name, string Type);
 
@@ -53,6 +59,31 @@ public class Program
     public static byte[] AttachSignature(byte[] unsignedTransaction, byte[] signature)
     {
         return RawUnsignedTransaction.Deserialize(unsignedTransaction).AttachSignature(signature).Serialize();
+    }
+
+    [JSInvokable]
+    public static string[] ListAllStates()
+    {
+        Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
+        return stateInterfaceType.Assembly.GetTypes()
+            .Where(t => !t.IsInterface && !t.IsAbstract && t.IsAssignableTo(stateInterfaceType)).Select(t => t.FullName).ToArray();
+    }
+
+    [JSInvokable]
+    public static object DeserializeState(string typeFullName, byte[] bytes)
+    {
+        var codec = new Codec();
+        var decoded = codec.Decode(bytes);
+        
+        Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
+        Type stateType = stateInterfaceType.Assembly.GetType(typeFullName);
+        if (stateType is null) {
+            Console.Error.WriteLine("stateType is null");
+        }
+
+        var ctor = stateType?.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Count() == 1 && ctor.GetParameters().First().ParameterType.IsAssignableTo(typeof(Bencodex.Types.IValue)));
+        Console.Error.WriteLine("ctor is " + (ctor is null));
+        return ctor?.Invoke(new[] { decoded });
     }
 
     private static string RemoveUnexpectedParts(string typeName)
