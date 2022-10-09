@@ -135,8 +135,7 @@ function generateStatesTsFile() {
     const aliasDecls: ts.TypeAliasDeclaration[] = [];
     const deseiralizeFunctionDecls: ts.FunctionDeclaration[] = [];
     for (const stateType of allStateTypes) {
-        console.log("STATE_TYPE is " + stateType);
-        const className = stateType.replace(/^Nekoyume.Model./, "").replace(/^State./, "").replace("+", "Inner").split(".").map(value => value[0].toUpperCase() + value.substring(1)).join("");
+        const className = stateType.replace(/^Nekoyume.Model./, "").replace(/^State./, "").replace("+", "").split(".").map(value => value[0].toUpperCase() + value.substring(1)).join("");
         const aliasDecl = ts.factory.createTypeAliasDeclaration(exportModifiers, className, undefined, ts.factory.createTypeReferenceNode(dotnet.Lib9c.Wasm.GetStateJSType(stateType)));
         aliasDecls.push(aliasDecl);
 
