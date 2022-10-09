@@ -239,6 +239,11 @@ public static class JsonUtils
             return "[" + string.Join(", ", type.GetGenericArguments().Select(t => ResolveType(t, fieldName = "'s tuple arg"))) + "]";
         }
 
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Generic.ICollection<>))
+        {
+            return ResolveType(type.GetGenericArguments()[0], fieldName + "'s ICollection type arg") + "[]";
+        }
+
         if (type.IsEnum)
         {
             return string.Join(" | ", type.GetEnumNames().Select(x => $"\"{x}\""));
@@ -254,7 +259,10 @@ public static class JsonUtils
             StringBuilder builder = new StringBuilder();
             builder.Append("{");
 
-            if (type.GetConstructors().Where(ctr =>
+            var stateInterfaceType = typeof(Nekoyume.Model.State.IState);
+
+            if (!type.IsAssignableTo(stateInterfaceType) &&
+                type.GetConstructors().Where(ctr =>
                     ctr.GetParameters().Length > 0 &&
                     !(ctr.GetParameters().Length == 1 && typeof(Bencodex.Types.IValue).IsAssignableFrom(ctr.GetParameters().First().ParameterType)) &&
                     !(ctr.GetParameters().Length == 2 && ctr.GetParameters().First().ParameterType == typeof(SerializationInfo) && ctr.GetParameters().Skip(1).First().ParameterType == typeof(StreamingContext))
@@ -296,8 +304,11 @@ public static class JsonUtils
 
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredVariableName(f.Name) && !IsIgnoredType(f.FieldType));
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => !IsIgnoredVariableName(p.Name) && !IsIgnoredType(p.PropertyType));
+            Console.Error.WriteLine(type.Name);
             foreach (var f in fields)
             {
+                Console.Error.WriteLine(type.Name + " " + f.Name);
+
                 var info = context.Create(f);
                 var nullableSuffix = info.ReadState is NullabilityState.Nullable ? "| null" : "";
                 var innerType = f.FieldType.IsGenericType && f.FieldType.GetGenericTypeDefinition() == typeof(Nullable<>) ? f.FieldType.GetGenericArguments()[0] : f.FieldType;

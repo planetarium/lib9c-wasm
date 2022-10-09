@@ -66,7 +66,14 @@ public class Program
     {
         Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
         return stateInterfaceType.Assembly.GetTypes()
-            .Where(t => !t.IsInterface && !t.IsAbstract && t.IsAssignableTo(stateInterfaceType)).Select(t => t.FullName).ToArray();
+            .Where(t =>
+                !t.IsInterface &&
+                !t.IsAbstract &&
+                t.IsAssignableTo(stateInterfaceType) &&
+                t.Namespace.StartsWith("Nekoyume.Model") &&
+                !t.IsGenericType &&
+                t.FullName != "Nekoyume.Model.ArenaPlayerDigest"
+            ).Select(t => t.FullName).ToArray();
     }
 
     [JSInvokable]
@@ -84,6 +91,18 @@ public class Program
         var ctor = stateType?.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Count() == 1 && ctor.GetParameters().First().ParameterType.IsAssignableTo(typeof(Bencodex.Types.IValue)));
         Console.Error.WriteLine("ctor is " + (ctor is null));
         return ctor?.Invoke(new[] { decoded });
+    }
+
+    [JSInvokable]
+    public static string GetStateJSType(string typeFullName)
+    {
+        Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
+        Type stateType = stateInterfaceType.Assembly.GetType(typeFullName);
+        if (stateType is null) {
+            Console.Error.WriteLine("stateType is null");
+        }
+
+        return ResolveType(stateType);
     }
 
     private static string RemoveUnexpectedParts(string typeName)

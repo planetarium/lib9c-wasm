@@ -125,25 +125,40 @@ function generateTxTsFile() {
 }
 
 function generateStatesTsFile() {
-    const stateTypeUnionType = ts.factory.createUnionTypeNode(dotnet.Lib9c.Wasm.ListAllStates().map(t => ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral(t))));
-    const uint8ArrayType = ts.factory.createTypeReferenceNode("Uint8Array");
-    const deserializeStateWrapperDecl = ts.factory.createFunctionDeclaration(exportModifiers, undefined, "deserializeState", undefined, [
-        ts.factory.createParameterDeclaration(undefined, undefined, "type", undefined, stateTypeUnionType),
-        ts.factory.createParameterDeclaration(undefined, undefined, "bytes", undefined, uint8ArrayType),
-    ], uint8ArrayType, ts.factory.createBlock([
-        ts.factory.createReturnStatement(
-            ts.factory.createCallExpression(
-                ts.factory.createIdentifier("dotnet.Lib9c.Wasm.DeserializeState"),
-                undefined,
-                [
-                    ts.factory.createIdentifier("type"),
-                    ts.factory.createIdentifier("bytes"),
-                ]
-            )
-        )
-    ], true));
+    const typesImportDecl = ts.factory.createImportDeclaration(undefined, ts.factory.createImportClause(false, undefined, ts.factory.createNamedImports([
+        ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("Address")),
+        ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("Guid")),
+        ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("Currency")),
+    ])), ts.factory.createStringLiteral("./utils"));
 
-    const nodeArray = ts.factory.createNodeArray([importDecl, deserializeStateWrapperDecl]);
+    const allStateTypes = dotnet.Lib9c.Wasm.ListAllStates();
+    const aliasDecls: ts.TypeAliasDeclaration[] = [];
+    const deseiralizeFunctionDecls: ts.FunctionDeclaration[] = [];
+    for (const stateType of allStateTypes) {
+        console.log("STATE_TYPE is " + stateType);
+        const className = stateType.replace(/^Nekoyume.Model./, "").replace(/^State./, "").replace("+", "Inner").split(".").map(value => value[0].toUpperCase() + value.substring(1)).join("");
+        const aliasDecl = ts.factory.createTypeAliasDeclaration(exportModifiers, className, undefined, ts.factory.createTypeReferenceNode(dotnet.Lib9c.Wasm.GetStateJSType(stateType)));
+        aliasDecls.push(aliasDecl);
+
+        const uint8ArrayType = ts.factory.createTypeReferenceNode("Uint8Array");
+        const deserializeStateDecl = ts.factory.createFunctionDeclaration(exportModifiers, undefined, "deserialize" + className, undefined, [
+            ts.factory.createParameterDeclaration(undefined, undefined, "bytes", undefined, uint8ArrayType),
+        ], ts.factory.createTypeReferenceNode(className), ts.factory.createBlock([
+            ts.factory.createReturnStatement(
+                ts.factory.createCallExpression(
+                    ts.factory.createIdentifier("dotnet.Lib9c.Wasm.DeserializeState"),
+                    undefined,
+                    [
+                        ts.factory.createStringLiteral(stateType),
+                        ts.factory.createIdentifier("bytes"),
+                    ]
+                )
+            )
+        ], true));
+        deseiralizeFunctionDecls.push(deserializeStateDecl);
+    }
+
+    const nodeArray = ts.factory.createNodeArray([typesImportDecl, importDecl, ...aliasDecls, ...deseiralizeFunctionDecls]);
     const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
 
     writeFileSync("./generated/states.ts", result);
