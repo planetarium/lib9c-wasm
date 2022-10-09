@@ -224,6 +224,11 @@ public static class JsonUtils
             return "Map<" + ResolveType(type.GetGenericArguments()[0], fieldName + "'s IReadOnlyDictionary key type arg") + ", " + ResolveType(type.GetGenericArguments()[1], fieldName + "'s IReadOnlyDictionary value type arg") + ">";
         }
 
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Generic.IDictionary<,>))
+        {
+            return "Map<" + ResolveType(type.GetGenericArguments()[0], fieldName + "'s IReadOnlyDictionary key type arg") + ", " + ResolveType(type.GetGenericArguments()[1], fieldName + "'s IDictionary value type arg") + ">";
+        }
+
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Immutable.IImmutableSet<>))
         {
             return ResolveType(type.GetGenericArguments()[0], fieldName + "'s IImmutableSet type arg") + "[]";
@@ -232,6 +237,16 @@ public static class JsonUtils
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Immutable.ImmutableHashSet<>))
         {
             return ResolveType(type.GetGenericArguments()[0], fieldName + "'s ImmutableSet type arg") + "[]";
+        }
+
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Immutable.IImmutableList<>))
+        {
+            return ResolveType(type.GetGenericArguments()[0], fieldName + "'s IImmutableList type arg") + "[]";
+        }
+
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Generic.HashSet<>))
+        {
+            return ResolveType(type.GetGenericArguments()[0], fieldName + "'s HashSet type arg") + "[]";
         }
 
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.ValueTuple<>))
@@ -304,11 +319,8 @@ public static class JsonUtils
 
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredVariableName(f.Name) && !IsIgnoredType(f.FieldType));
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => !IsIgnoredVariableName(p.Name) && !IsIgnoredType(p.PropertyType));
-            Console.Error.WriteLine(type.Name);
             foreach (var f in fields)
             {
-                Console.Error.WriteLine(type.Name + " " + f.Name);
-
                 var info = context.Create(f);
                 var nullableSuffix = info.ReadState is NullabilityState.Nullable ? "| null" : "";
                 var innerType = f.FieldType.IsGenericType && f.FieldType.GetGenericTypeDefinition() == typeof(Nullable<>) ? f.FieldType.GetGenericArguments()[0] : f.FieldType;
