@@ -1,0 +1,11 @@
+# lib9c
+# Lib9c.Wasm
+# Lib9c.Wasm.Tests
+# docs
+# generated
+# generate.ts
+# examples
+# *.tgz
+# tsconfig*
+*
+!dist/**
