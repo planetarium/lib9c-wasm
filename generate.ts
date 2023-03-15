@@ -38,7 +38,7 @@ function generateIndexTsFile() {
 
 function generateActionsTsFile() {
     function generateBuildActionFunctionParameters(typeId: string): readonly ts.ParameterDeclaration[] {
-        const plainValueType = ts.factory.createTypeReferenceNode(dotnet.Lib9c.Wasm.GetAvailableInputs(typeId));
+        const plainValueType = ts.factory.createTypeReferenceNode(dotnet.Lib9c.Wasm.getAvailableInputs(typeId));
         return [
             ts.factory.createParameterDeclaration(undefined, undefined, "plainValue", undefined, plainValueType),
         ];
@@ -58,7 +58,7 @@ function generateActionsTsFile() {
     ], returnType, ts.factory.createBlock([
         ts.factory.createReturnStatement(
             ts.factory.createCallExpression(
-                ts.factory.createIdentifier("dotnet.Lib9c.Wasm.BuildAction"),
+                ts.factory.createIdentifier("dotnet.Lib9c.Wasm.buildAction"),
                 undefined,
                 [
                     ts.factory.createIdentifier("typeId"),
@@ -70,7 +70,7 @@ function generateActionsTsFile() {
         )
     ], true));
 
-    const actionsFunctionDecls = dotnet.Lib9c.Wasm.GetAllActionTypes().map(typeId => {
+    const actionsFunctionDecls = dotnet.Lib9c.Wasm.getAllActionTypes().map(typeId => {
         return ts.factory.createFunctionDeclaration(exportModifiers, undefined, typeId, undefined, generateBuildActionFunctionParameters(typeId), returnType, ts.factory.createBlock([
             ts.factory.createReturnStatement(
                 ts.factory.createCallExpression(
@@ -99,7 +99,7 @@ function generateTxTsFile() {
         ts.factory.createParameterDeclaration(undefined, undefined, "genesisHash", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
         ts.factory.createParameterDeclaration(undefined, undefined, "action", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
     ], ts.factory.createTypeReferenceNode("Uint8Array"), ts.factory.createBlock([
-        ts.factory.createReturnStatement(ts.factory.createCallExpression(ts.factory.createIdentifier("dotnet.Lib9c.Wasm.BuildRawTransaction"), undefined, [
+        ts.factory.createReturnStatement(ts.factory.createCallExpression(ts.factory.createIdentifier("dotnet.Lib9c.Wasm.buildRawTransaction"), undefined, [
             ts.factory.createIdentifier("nonce"),
             ts.factory.createIdentifier("publicKey"),
             ts.factory.createIdentifier("signer"),
@@ -112,7 +112,7 @@ function generateTxTsFile() {
         ts.factory.createParameterDeclaration(undefined, undefined, "unsignedTx", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
         ts.factory.createParameterDeclaration(undefined, undefined, "signature", undefined, ts.factory.createTypeReferenceNode("Uint8Array")),
     ], ts.factory.createTypeReferenceNode("Uint8Array"), ts.factory.createBlock([
-        ts.factory.createReturnStatement(ts.factory.createCallExpression(ts.factory.createIdentifier("dotnet.Lib9c.Wasm.AttachSignature"), undefined, [
+        ts.factory.createReturnStatement(ts.factory.createCallExpression(ts.factory.createIdentifier("dotnet.Lib9c.Wasm.attachSignature"), undefined, [
             ts.factory.createIdentifier("unsignedTx"),
             ts.factory.createIdentifier("signature"),
         ]))
@@ -131,12 +131,12 @@ function generateStatesTsFile() {
         ts.factory.createImportSpecifier(false, undefined, ts.factory.createIdentifier("Currency")),
     ])), ts.factory.createStringLiteral("./utils"));
 
-    const allStateTypes = dotnet.Lib9c.Wasm.ListAllStates();
+    const allStateTypes = dotnet.Lib9c.Wasm.listAllStates();
     const aliasDecls: ts.TypeAliasDeclaration[] = [];
     const deseiralizeFunctionDecls: ts.FunctionDeclaration[] = [];
     for (const stateType of allStateTypes) {
         const className = stateType.replace(/^Nekoyume.Model./, "").replace(/^State./, "").replace("+", "").split(".").map(value => value[0].toUpperCase() + value.substring(1)).join("");
-        const aliasDecl = ts.factory.createTypeAliasDeclaration(exportModifiers, className, undefined, ts.factory.createTypeReferenceNode(dotnet.Lib9c.Wasm.GetStateJSType(stateType)));
+        const aliasDecl = ts.factory.createTypeAliasDeclaration(exportModifiers, className, undefined, ts.factory.createTypeReferenceNode(dotnet.Lib9c.Wasm.getStateJSType(stateType)));
         aliasDecls.push(aliasDecl);
 
         const uint8ArrayType = ts.factory.createTypeReferenceNode("Uint8Array");
@@ -145,7 +145,7 @@ function generateStatesTsFile() {
         ], ts.factory.createTypeReferenceNode(className), ts.factory.createBlock([
             ts.factory.createReturnStatement(
                 ts.factory.createCallExpression(
-                    ts.factory.createIdentifier("dotnet.Lib9c.Wasm.DeserializeState"),
+                    ts.factory.createIdentifier("dotnet.Lib9c.Wasm.deserializeState"),
                     undefined,
                     [
                         ts.factory.createStringLiteral(stateType),
