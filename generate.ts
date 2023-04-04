@@ -133,7 +133,7 @@ function generateStatesTsFile() {
 
     const allStateTypes = dotnet.Lib9c.Wasm.listAllStates();
     const aliasDecls: ts.TypeAliasDeclaration[] = [];
-    const deseiralizeFunctionDecls: ts.FunctionDeclaration[] = [];
+    const deserializeFunctionDecls: ts.FunctionDeclaration[] = [];
     for (const stateType of allStateTypes) {
         const className = stateType.replace(/^Nekoyume.Model./, "").replace(/^State./, "").replace("+", "").split(".").map(value => value[0].toUpperCase() + value.substring(1)).join("");
         const aliasDecl = ts.factory.createTypeAliasDeclaration(exportModifiers, className, undefined, ts.factory.createTypeReferenceNode(dotnet.Lib9c.Wasm.getStateJSType(stateType)));
@@ -154,10 +154,10 @@ function generateStatesTsFile() {
                 )
             )
         ], true));
-        deseiralizeFunctionDecls.push(deserializeStateDecl);
+        deserializeFunctionDecls.push(deserializeStateDecl);
     }
 
-    const nodeArray = ts.factory.createNodeArray([typesImportDecl, importDecl, ...aliasDecls, ...deseiralizeFunctionDecls]);
+    const nodeArray = ts.factory.createNodeArray([typesImportDecl, importDecl, ...aliasDecls, ...deserializeFunctionDecls]);
     const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
 
     writeFileSync("./generated/states.ts", result);
