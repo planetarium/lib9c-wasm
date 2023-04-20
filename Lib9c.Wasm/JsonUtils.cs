@@ -266,7 +266,20 @@ public static class JsonUtils
 
         if (type.IsInterface || type.IsAbstract)
         {
-            return string.Join(" | ", type.Assembly.GetTypes().Where(t => t.IsAssignableTo(type) && !t.IsAbstract && !t.IsInterface).Select(t => ResolveType(t)));
+            var derivedTypes = type.Assembly.GetTypes()
+                .Where(t => t.IsAssignableTo(type) && !t.IsAbstract && !t.IsInterface)
+                .Select(t => ResolveType(t))
+                .Where(t => !string.IsNullOrEmpty(t))  // Filter out empty types
+                .ToArray();
+
+            if (derivedTypes.Length > 0)
+            {
+                return string.Join(" | ", derivedTypes);
+            }
+            else
+            {
+                throw new ArgumentException($"No concrete implementations found for {type.FullName}");
+            }
         }
 
         if (type.IsValueType || type.IsClass)
@@ -315,7 +328,7 @@ public static class JsonUtils
                     || type.Name.EndsWith("Digest");
             }
 
-            NullabilityInfoContext context = new ();
+            NullabilityInfoContext context = new();
 
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredVariableName(f.Name) && !IsIgnoredType(f.FieldType));
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => !IsIgnoredVariableName(p.Name) && !IsIgnoredType(p.PropertyType));
@@ -334,7 +347,8 @@ public static class JsonUtils
                     continue;
                 }
 
-                if (p.Name.IndexOf(".") != -1) {
+                if (p.Name.IndexOf(".") != -1)
+                {
                     continue;
                 }
 
