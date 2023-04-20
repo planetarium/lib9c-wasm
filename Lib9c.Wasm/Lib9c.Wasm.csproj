@@ -1,17 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>Exe</OutputType>
+    <TargetOS>browser</TargetOS>
+    <TargetArchitecture>wasm</TargetArchitecture>
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>    <ImplicitUsings>enable</ImplicitUsings>
+    
     <Nullable>enable</Nullable>
+
     <NullabilityInfoContextSupport>true</NullabilityInfoContextSupport>
+    <!-- JSExport requires unsafe code -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!-- Size Reduction -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <EventSourceSupport>false</EventSourceSupport>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+    <EnableUnsafeUTF7Encoding>false</EnableUnsafeUTF7Encoding>
+    <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
+    <DebuggerSupport>false</DebuggerSupport>
+    <WasmEmitSymbolMap>true</WasmEmitSymbolMap>    <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\lib9c\Lib9c\Lib9c.csproj" />
     <ProjectReference Include="..\libplanet\Libplanet\Libplanet.csproj" />
-
-    <PackageReference Include="DotNetJS" Version="*"/>
   </ItemGroup>
 
 </Project>
