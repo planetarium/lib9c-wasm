@@ -1,8 +1,6 @@
 import { writeFileSync, existsSync, mkdirSync, copyFileSync } from "fs";
-import * as ts from "typescript";
-
-// Path when building with `yarn build` command.
-import * as dotnet from "./Lib9c.Wasm/bin/dotnet";
+import ts from "typescript";
+import { dotnet } from "@microsoft/dotnet-runtime";
 
 const file = ts.createSourceFile(
   "source.ts",
@@ -24,10 +22,12 @@ const importDecl = ts.factory.createImportDeclaration(
 const exportModifiers = [
   ts.factory.createModifier(ts.SyntaxKind.ExportKeyword),
 ];
+const { setModuleImports, getAssemblyExports, getConfig } =
+  await dotnet.create();
+const config = getConfig();
+const Lib9c = await getAssemblyExports(config.mainAssemblyName!);
 
 async function main() {
-  await dotnet.boot();
-
   if (!existsSync("./generated")) {
     mkdirSync("./generated");
   }
@@ -35,7 +35,6 @@ async function main() {
   generateIndexTsFile();
   generateActionsTsFile();
 
-  copyLib9cWasmFiles();
   copyUtilsTs();
 }
 
@@ -43,7 +42,7 @@ function generateIndexTsFile() {
   const bootFunctionImpl = ts.factory.createFunctionDeclaration(
     exportModifiers,
     undefined,
-    "boot",
+    "create",
     undefined,
     [],
     ts.factory.createTypeReferenceNode("Promise<void>"),
@@ -51,7 +50,7 @@ function generateIndexTsFile() {
       [
         ts.factory.createReturnStatement(
           ts.factory.createCallExpression(
-            ts.factory.createIdentifier("dotnet.boot"),
+            ts.factory.createIdentifier("dotnet.create"),
             undefined,
             undefined
           )
@@ -76,8 +75,9 @@ function generateActionsTsFile() {
   function generateBuildActionFunctionParameters(
     typeId: string
   ): readonly ts.ParameterDeclaration[] {
-    const inputs = dotnet.Lib9c.Wasm.getAvailableInputs(typeId);
-    const plainValueType = ts.factory.createTypeReferenceNode(inputs);
+    const plainValueType = ts.factory.createTypeReferenceNode(
+      Lib9c.Lib9c.Wasm.Program.GetAvailableInputs(typeId)
+    );
     return [
       ts.factory.createParameterDeclaration(
         undefined,
@@ -147,7 +147,7 @@ function generateActionsTsFile() {
       [
         ts.factory.createReturnStatement(
           ts.factory.createCallExpression(
-            ts.factory.createIdentifier("dotnet.Lib9c.Wasm.buildAction"),
+            ts.factory.createIdentifier("Lib9c.Lib9c.Wasm.Program.BuildAction"),
             undefined,
             [
               ts.factory.createIdentifier("typeId"),
@@ -167,12 +167,8 @@ function generateActionsTsFile() {
     )
   );
 
-  const actionsFunctionDecls = dotnet.Lib9c.Wasm.getAllActionTypes().flatMap(
+  const actionsFunctionDecls = Lib9c.Lib9c.Wasm.Program.GetAllActionTypes().map(
     (typeId: string) => {
-      if (dotnet.Lib9c.Wasm.getAvailableInputs(typeId).includes("invalid")) {
-        console.log(`${typeId} have invalid type, skipped.`);
-        return [];
-      }
       return ts.factory.createFunctionDeclaration(
         exportModifiers,
         undefined,
