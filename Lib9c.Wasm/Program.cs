@@ -34,6 +34,7 @@ public partial class Program
     [JSExport]
     public static string GetAvailableInputs(string actionTypeString)
     {
+        Console.WriteLine(actionTypeString);
         Type actionType = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
             .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) is Bencodex.Types.Text text && text.Value == actionTypeString);
 
