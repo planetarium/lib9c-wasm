@@ -278,39 +278,14 @@ public static class JsonUtils
             }
             else
             {
-                throw new ArgumentException($"No concrete implementations found for {type.FullName}");
+                Console.Write($"No concrete implementations found for {type.FullName}, returning string 'invalid'");
+                return "invalid";
             }
         }
 
         if (type.IsValueType || type.IsClass)
         {
-            StringBuilder builder = new StringBuilder();
-            builder.Append("{");
-
-            var stateInterfaceType = typeof(Nekoyume.Model.State.IState);
-
-            if (!type.IsAssignableTo(stateInterfaceType) &&
-                type.GetConstructors().Where(ctr =>
-                    ctr.GetParameters().Length > 0 &&
-                    !(ctr.GetParameters().Length == 1 && typeof(Bencodex.Types.IValue).IsAssignableFrom(ctr.GetParameters().First().ParameterType)) &&
-                    !(ctr.GetParameters().Length == 2 && ctr.GetParameters().First().ParameterType == typeof(SerializationInfo) && ctr.GetParameters().Skip(1).First().ParameterType == typeof(StreamingContext))
-                ).OrderByDescending(x => x.GetParameters().Length).FirstOrDefault() is { } constructor)
-            {
-                foreach (var parameter in constructor.GetParameters())
-                {
-                    if (type.IsAssignableTo(typeof(Nekoyume.Action.GameAction)) && parameter.Name == nameof(Nekoyume.Action.GameAction.Id))
-                    {
-                        continue;
-                    }
-
-                    builder.Append($"{parameter.Name}: {ResolveType(parameter.ParameterType)};");
-                }
-
-                builder.Append("}");
-
-                return builder.ToString();
-            }
-
+            Console.WriteLine(type.Name);
             bool IsIgnoredVariableName(string name)
             {
                 return name == "errors"
@@ -326,6 +301,40 @@ public static class JsonUtils
                     || type.Name.EndsWith("AvatarState")
                     || type.Name.EndsWith("ArenaInfo")
                     || type.Name.EndsWith("Digest");
+            }
+
+           if (IsIgnoredType(type))
+            {
+                return "invalid";
+            }
+
+            StringBuilder builder = new StringBuilder();
+            builder.Append("{");
+ 
+
+            var stateInterfaceType = typeof(Nekoyume.Model.State.IState);
+            var stateType = type.IsAssignableTo(stateInterfaceType);
+            
+
+            if (!stateType &&
+                type.GetConstructors().Where(ctr =>
+                    ctr.GetParameters().Length > 0 &&
+                    !(ctr.GetParameters().Length == 1 && typeof(Bencodex.Types.IValue).IsAssignableFrom(ctr.GetParameters().First().ParameterType)) &&
+                    !(ctr.GetParameters().Length == 2 && ctr.GetParameters().First().ParameterType == typeof(SerializationInfo) && ctr.GetParameters().Skip(1).First().ParameterType == typeof(StreamingContext))
+                ).OrderByDescending(x => x.GetParameters().Length).FirstOrDefault() is { } constructor)
+            {
+                foreach (var parameter in constructor.GetParameters())
+                {
+                    if (type.IsAssignableTo(typeof(Nekoyume.Action.GameAction)) && parameter.Name == nameof(Nekoyume.Action.GameAction.Id))
+                    {
+                        continue;
+                    }
+                    builder.Append($"{parameter.Name}: {ResolveType(parameter.ParameterType)};");
+                }
+
+                builder.Append("}");
+
+                return builder.ToString();
             }
 
             NullabilityInfoContext context = new();

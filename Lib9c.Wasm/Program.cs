@@ -30,6 +30,7 @@ public partial class Program
     [JSExport]
     public static string GetAvailableInputs(string actionTypeString)
     {
+        Console.WriteLine(actionTypeString);
         Type actionType = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
             .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) == actionTypeString);
         var fields = actionType.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => f.IsPublic);

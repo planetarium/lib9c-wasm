@@ -36,8 +36,7 @@ async function main() {
   generateActionsTsFile();
   //generateTxTsFile();
   //generateStatesTsFile();
-
-  copyUtilsTs();
+  //copyUtilsTs();
 }
 
 function generateIndexTsFile() {
@@ -72,8 +71,9 @@ function generateActionsTsFile() {
   function generateBuildActionFunctionParameters(
     typeId: string
   ): readonly ts.ParameterDeclaration[] {
+    const inputs = Lib9c.Lib9c.Wasm.Program.GetAvailableInputs(typeId)
     const plainValueType = ts.factory.createTypeReferenceNode(
-      Lib9c.Lib9c.Wasm.Program.GetAvailableInputs(typeId)
+      inputs
     );
     return [
       ts.factory.createParameterDeclaration(
@@ -166,12 +166,16 @@ function generateActionsTsFile() {
 
   const actionsFunctionDecls = Lib9c.Lib9c.Wasm.Program.GetAllActionTypes().map(
     (typeId: string) => {
+      const functionParam = generateBuildActionFunctionParameters(typeId);
+      if (functionParam.toString().includes("invalid")){
+        return;
+      }
       return ts.factory.createFunctionDeclaration(
         exportModifiers,
         undefined,
         typeId,
         undefined,
-        generateBuildActionFunctionParameters(typeId),
+        functionParam,
         returnType,
         ts.factory.createBlock(
           [
