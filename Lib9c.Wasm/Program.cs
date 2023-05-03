@@ -1,25 +1,25 @@
 using System.Reflection;
 using System.Text.Json;
+using System.Runtime.InteropServices.JavaScript;
+using System.Runtime.Versioning;
 using Bencodex;
-using DotNetJS;
 using Libplanet.Action;
-using Microsoft.JSInterop;
 using Nekoyume.Action;
 using static Lib9c.Wasm.JsonUtils;
 
 namespace Lib9c.Wasm;
-public class Program
+
+[SupportedOSPlatform("browser")]
+public partial class Program
 {
+
     public static void Main()
     {
-        JS.Runtime.ConfigureJson(options => {
-            options.IncludeFields = true;
-        });
     }
 
     public record Input(string Name, string Type);
 
-    [JSInvokable]
+    [JSExport]
     public static string[] GetAllActionTypes()
     {
         var types = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
@@ -27,41 +27,48 @@ public class Program
         return types.Select(x => ActionTypeAttribute.ValueOf(x)).ToArray();
     }
 
-    [JSInvokable]
+    [JSExport]
     public static string GetAvailableInputs(string actionTypeString)
     {
+        Console.WriteLine(actionTypeString);
         Type actionType = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
             .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) == actionTypeString);
         var fields = actionType.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => f.IsPublic);
         var properties = actionType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => p.CanWrite);
-        return ResolveType(actionType);
-        // return fields.Select(f => new Input(f.Name, ResolveType(f.FieldType, f.Name))).Concat(properties.Select(p => new Input(p.Name, ResolveType(p.PropertyType)))).ToArray();
+
+        // Map fields and properties to their TypeScript types
+        var inputs = fields.Select(f => $"{f.Name}: {ResolveType(f.FieldType)}").Concat(properties.Select(p => $"{p.Name}: {ResolveType(p.PropertyType)}")).ToArray();
+
+        // Combine the TypeScript types into a single object type
+        var typeInfo = "{" + string.Join(", ", inputs) + "}";
+
+        return typeInfo;
     }
 
-    [JSInvokable]
-    public static byte[] BuildAction(string actionTypeString, JsonElement dictionary)
+    [JSExport]
+    public static byte[] BuildAction(string actionTypeString, [JSMarshalAsAttribute<JSType.Any>] Object dictionary)
     {
         Type actionType = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
             .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) == actionTypeString);
 
-        var action = (IAction)ConvertJsonElementTo(dictionary, actionType);
+        var action = (IAction)dictionary;
         return new Codec().Encode(((PolymorphicAction<ActionBase>)(dynamic)action).PlainValue);
     }
 
-    [JSInvokable]
-    public static byte[] BuildRawTransaction(long nonce, byte[] publicKey, byte[] address, byte[] genesisHash, byte[] action)
+    [JSExport]
+    public static byte[] BuildRawTransaction([JSMarshalAsAttribute<JSType.BigInt>] long nonce, byte[] publicKey, byte[] address, byte[] genesisHash, byte[] action)
     {
         var tx = new RawUnsignedTransaction(nonce, publicKey, address, genesisHash, action, DateTimeOffset.UtcNow);
         return tx.Serialize();
     }
 
-    [JSInvokable]
+    [JSExport]
     public static byte[] AttachSignature(byte[] unsignedTransaction, byte[] signature)
     {
         return RawUnsignedTransaction.Deserialize(unsignedTransaction).AttachSignature(signature).Serialize();
     }
 
-    [JSInvokable]
+    [JSExport]
     public static string[] ListAllStates()
     {
         Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
@@ -76,29 +83,32 @@ public class Program
             ).Select(t => t.FullName).ToArray();
     }
 
-    [JSInvokable]
-    public static object DeserializeState(string typeFullName, byte[] bytes)
+    [JSExport]
+    public static JSObject DeserializeState(string typeFullName, byte[] bytes)
     {
         var codec = new Codec();
         var decoded = codec.Decode(bytes);
-        
+
         Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
         Type stateType = stateInterfaceType.Assembly.GetType(typeFullName);
-        if (stateType is null) {
+        if (stateType is null)
+        {
             Console.Error.WriteLine("stateType is null");
         }
 
         var ctor = stateType?.GetConstructors().FirstOrDefault(ctor => ctor.GetParameters().Count() == 1 && ctor.GetParameters().First().ParameterType.IsAssignableTo(typeof(Bencodex.Types.IValue)));
         Console.Error.WriteLine("ctor is " + (ctor is null));
-        return ctor?.Invoke(new[] { decoded });
+        var stateObject = ctor?.Invoke(new[] { decoded });
+        return stateObject as JSObject;
     }
 
-    [JSInvokable]
+    [JSExport]
     public static string GetStateJSType(string typeFullName)
     {
         Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
         Type stateType = stateInterfaceType.Assembly.GetType(typeFullName);
-        if (stateType is null) {
+        if (stateType is null)
+        {
             Console.Error.WriteLine("stateType is null");
         }
 
