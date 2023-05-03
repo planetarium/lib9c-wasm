@@ -72,10 +72,8 @@ function generateActionsTsFile() {
   function generateBuildActionFunctionParameters(
     typeId: string
   ): readonly ts.ParameterDeclaration[] {
-    const inputs = Lib9c.Lib9c.Wasm.Program.GetAvailableInputs(typeId)
-    const plainValueType = ts.factory.createTypeReferenceNode(
-      inputs
-    );
+    const inputs = Lib9c.Lib9c.Wasm.Program.GetAvailableInputs(typeId);
+    const plainValueType = ts.factory.createTypeReferenceNode(inputs);
     return [
       ts.factory.createParameterDeclaration(
         undefined,
@@ -165,18 +163,21 @@ function generateActionsTsFile() {
     )
   );
 
-  const actionsFunctionDecls = Lib9c.Lib9c.Wasm.Program.GetAllActionTypes().map(
-    (typeId: string) => {
-      const functionParam = generateBuildActionFunctionParameters(typeId);
-      if (functionParam.toString().includes("invalid")){
-        return;
+  const actionsFunctionDecls =
+    Lib9c.Lib9c.Wasm.Program.GetAllActionTypes().flatMap((typeId: string) => {
+      if (
+        Lib9c.Lib9c.Wasm.Program.GetAvailableInputs(typeId).includes("invalid")
+      ) {
+        console.log(`${typeId} have invalid type, skipped.`);
+        return [];
       }
+
       return ts.factory.createFunctionDeclaration(
         exportModifiers,
         undefined,
         typeId,
         undefined,
-        functionParam,
+        generateBuildActionFunctionParameters(typeId),
         returnType,
         ts.factory.createBlock(
           [
@@ -197,8 +198,7 @@ function generateActionsTsFile() {
           true
         )
       );
-    }
-  );
+    });
 
   const nodeArray = ts.factory.createNodeArray([
     importDecl,
@@ -426,7 +426,6 @@ function generateStatesTsFile() {
 }
 
 function copyLib9cWasmFiles() {
-
   // TODO : Actually copying whole build lib9c-wasm
   // Binary wrapping method is different after DotNetJs
   copyFileSync("./Lib9c.Wasm/bin/dotnet.js", "generated/dotnet.js");
