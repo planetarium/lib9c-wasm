@@ -5,13 +5,10 @@
     <TargetOS>browser</TargetOS>
     <TargetArchitecture>wasm</TargetArchitecture>
     <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
-    
     <ImplicitUsings>enable</ImplicitUsings>
     <WasmMainJSPath>index.js</WasmMainJSPath>
     <Nullable>enable</Nullable>
-
     <NullabilityInfoContextSupport>true</NullabilityInfoContextSupport>
-
     <WasmNativeStrip>true</WasmNativeStrip>
     <!-- JSExport requires unsafe code -->
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
@@ -23,11 +20,28 @@
     <HttpActivityPropagationSupport>false</HttpActivityPropagationSupport>
     <DebuggerSupport>false</DebuggerSupport>
     <WasmEmitSymbolMap>true</WasmEmitSymbolMap>    
+    <!-- Compress -->
+    <CompressionIncludePatterns>$(CompressionIncludePatterns);_framework\**</CompressionIncludePatterns>
+    <DisableBuildCompression Condition="'$(WasmBuildingForNestedPublish)' == 'true'">true</DisableBuildCompression>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\lib9c\Lib9c\Lib9c.csproj" />
     <ProjectReference Include="..\libplanet\Libplanet\Libplanet.csproj" />
   </ItemGroup>
+
+  <Target Name="CopyRelinkedPackage" AfterTargets="WasmBuildApp" DependsOnTargets="Build" Inputs="$(WasmAppDir)/dotnet.js;
+          $(WasmAppDir)/dotnet.wasm;
+          $(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/dotnet.d.ts;
+          $(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/dotnet-legacy.d.ts;
+          $(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/package.json;" Outputs="bin/dotnet-runtime/.yarn-stamp">
+    <ItemGroup>
+      <YarnPackageFiles Include="$(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/dotnet.d.ts"/>
+      <YarnPackageFiles Include="$(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/dotnet-legacy.d.ts"/>
+      <YarnPackageFiles Include="$(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/package.json"/>
+    </ItemGroup>
+    <Exec Command="rm index.html index.js; cp -r . $(MSBuildProjectDirectory)/package" WorkingDirectory="$(WasmAppDir)"/>
+    <Copy SourceFiles="@(YarnPackageFiles)" DestinationFolder="package" />
+  </Target>
 
 </Project>
