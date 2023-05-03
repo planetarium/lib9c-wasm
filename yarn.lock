@@ -95,10 +95,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/dotnet-runtime@file:./Lib9c.Wasm/bin/Debug/net7.0/browser-wasm::locator=lib9c-wasm%40workspace%3A.":
-  version: 7.0.4
-  resolution: "@microsoft/dotnet-runtime@file:./Lib9c.Wasm/bin/Debug/net7.0/browser-wasm#./Lib9c.Wasm/bin/Debug/net7.0/browser-wasm::hash=c2e261&locator=lib9c-wasm%40workspace%3A."
-  checksum: 8af0416960e5dd1af4b9cc63559cd2b7c6d97cab6c39233a16f0b79f51466ff7cb65a83b44b7369b2f6bc55082df0089ff475a0a5781f113d8a0d7575220d136
+"@microsoft/dotnet-runtime@file:package/::locator=lib9c-wasm%40workspace%3A.":
+  version: 7.0.5
+  resolution: "@microsoft/dotnet-runtime@file:package/#package/::hash=81f6ae&locator=lib9c-wasm%40workspace%3A."
+  checksum: fde431c2324c59bedc1991092eccb0125a293680a677a5527037f796d629f4605a29c2bc06b854b480ca86aa9098b495fac67dc4a455681f0ed91d8436c043ac
   languageName: node
   linkType: hard
 
@@ -314,7 +314,7 @@ __metadata:
   resolution: "lib9c-wasm@workspace:."
   dependencies:
     "@ethersproject/address": ^5.7.0
-    "@microsoft/dotnet-runtime": "file:./Lib9c.Wasm/bin/Debug/net7.0/browser-wasm"
+    "@microsoft/dotnet-runtime": "file:package/"
     "@types/elliptic": ^6.4.14
     "@types/node": ^18.7.18
     "@types/uuid": ^8.3.4

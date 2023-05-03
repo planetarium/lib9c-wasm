@@ -6,12 +6,13 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "dotnet-build": "cd Lib9c.Wasm; dotnet build -c Debug/Release; mv package ..",
     "build": "yarn build-wrapper",
     "compile": "yarn build; yarn tsc",
     "prepare-pack": "yarn compile; rm -rf dist; mkdir dist; cp -r generated/*.{js,d.ts,ts} README.md package.json dist",
     "custom-pack": "bash -c 'pushd dist; npm pack; mv planetarium-lib9c-wasm-*.tgz ..; popd'",
     "clean-dotnet": "rm -rf ./Lib9c.Wasm/bin/; dotnet publish",
-    "build-wrapper": "ts-node-esm ./generate.ts",
+    "build-wrapper": "ts-node-esm ./generate.ts; cp -r ./package/* generated/; rm -r package",
     "generate-docs": "yarn build; typedoc --out docs ./generated/*.ts --exclude generated/dotnet*"
   },
   "repository": {
@@ -35,7 +36,6 @@
   },
   "dependencies": {
     "@ethersproject/address": "^5.7.0",
-    "@microsoft/dotnet-runtime": "file:./Lib9c.Wasm/bin/Debug/net7.0/browser-wasm",
     "uuid": "^9.0.0"
   },
   "packageManager": "yarn@3.5.1"
