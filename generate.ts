@@ -1,6 +1,6 @@
 import { writeFileSync, existsSync, mkdirSync, copyFileSync } from "fs";
 import ts from "typescript";
-import { dotnet } from "@microsoft/dotnet-runtime";
+import { dotnet } from "./package/dotnet.js";
 
 const file = ts.createSourceFile(
   "source.ts",
@@ -17,11 +17,12 @@ const importDecl = ts.factory.createImportDeclaration(
     ts.factory.createIdentifier("dotnet"),
     undefined
   ),
-  ts.factory.createStringLiteral("./dotnet")
+  ts.factory.createStringLiteral("./dotnet.js")
 );
 const exportModifiers = [
   ts.factory.createModifier(ts.SyntaxKind.ExportKeyword),
 ];
+
 const { setModuleImports, getAssemblyExports, getConfig } =
   await dotnet.create();
 const config = getConfig();
