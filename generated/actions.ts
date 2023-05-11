@@ -1,15 +1,10 @@
-import { dotnet } from "./dotnet.js";
+import { RuntimeAPI, dotnet } from "./dotnet.js";
 import { Address, Guid, Currency, serializeObjectAsDotnet } from "./utils.js";
+
 function buildActionWrapper(typeId: string, plainValue: object): Uint8Array {
-    return dotnet.create().then(api => {
-        const config = api.getConfig();
-        return api.getAssemblyExports(config.mainAssemblyName!).then(Lib9c => {
-            return (Lib9c.Lib9c.Wasm.Program.BuildAction(typeId, serializeObjectAsDotnet(plainValue) as any).then((v: Uint8Array) => {
-                return v;
-            })
-        })
-    })
-};
+    return globalThis.Lib9c.Wasm.Program.BuildAction(typeId, serializeObjectAsDotnet(plainValue) as any);
+}
+
 export function activate_account2(plainValue: {PendingAddress: Address, Signature: Uint8Array}): Uint8Array {
     return buildActionWrapper("activate_account2", plainValue as any);
 }

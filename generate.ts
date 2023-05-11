@@ -62,6 +62,14 @@ function generateIndexTsFile() {
     )
   );
 
+  function Lib9cWasmFunctionDeclare() {
+    const Lib9c = ts.factory.createInterfaceDeclaration(
+      undefined,
+      "Lib9c",
+      ts.
+    )
+  }
+
   const nodeArray = ts.factory.createNodeArray([importDecl, bootFunctionImpl]);
   const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
 

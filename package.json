@@ -12,7 +12,7 @@
     "prepare-pack": "yarn compile; rm -rf dist; mkdir dist; cp -r generated/*.{js,d.ts} README.md package.json dist",
     "custom-pack": "pushd dist; npm pack; mv lib9c-wasm-*.tgz ..; popd",
     "clean-dotnet": "rm -rf ./Lib9c.Wasm/bin/; dotnet publish",
-    "build-wrapper": "ts-node-esm ./generate.ts; cp -r ./package/* generated/; rm -r package",
+    "build-wrapper": "ts-node-esm ./generate.ts; cp -r ./package/* generated/",
     "generate-docs": "yarn build; typedoc --out docs ./generated/*.ts --exclude generated/dotnet*"
   },
   "repository": {
@@ -26,13 +26,14 @@
   },
   "homepage": "https://github.com/moreal/lib9c-wasm#readme",
   "devDependencies": {
+    "@microsoft/dotnet-runtime": "file:./generated",
     "@types/elliptic": "^6.4.14",
     "@types/node": "^18.7.18",
     "@types/uuid": "^8.3.4",
     "elliptic": "^6.5.4",
     "ts-node": "^10.9.1",
     "typedoc": "^0.23.14",
-    "typescript": "^5.0.2"
+    "typescript": "^5.0.4"
   },
   "dependencies": {
     "@ethersproject/address": "^5.7.0",
