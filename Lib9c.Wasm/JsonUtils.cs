@@ -315,7 +315,7 @@ public static class JsonUtils
                     || type.Name.EndsWith("Digest");
             }
 
-            NullabilityInfoContext context = new ();
+            NullabilityInfoContext context = new();
 
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredVariableName(f.Name) && !IsIgnoredType(f.FieldType));
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => !IsIgnoredVariableName(p.Name) && !IsIgnoredType(p.PropertyType));
@@ -334,7 +334,8 @@ public static class JsonUtils
                     continue;
                 }
 
-                if (p.Name.IndexOf(".") != -1) {
+                if (p.Name.IndexOf(".") != -1)
+                {
                     continue;
                 }
 

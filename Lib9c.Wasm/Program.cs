@@ -12,7 +12,8 @@ public class Program
 {
     public static void Main()
     {
-        JS.Runtime.ConfigureJson(options => {
+        JS.Runtime.ConfigureJson(options =>
+        {
             options.IncludeFields = true;
         });
     }
@@ -81,10 +82,11 @@ public class Program
     {
         var codec = new Codec();
         var decoded = codec.Decode(bytes);
-        
+
         Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
         Type stateType = stateInterfaceType.Assembly.GetType(typeFullName);
-        if (stateType is null) {
+        if (stateType is null)
+        {
             Console.Error.WriteLine("stateType is null");
         }
 
@@ -98,7 +100,8 @@ public class Program
     {
         Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
         Type stateType = stateInterfaceType.Assembly.GetType(typeFullName);
-        if (stateType is null) {
+        if (stateType is null)
+        {
             Console.Error.WriteLine("stateType is null");
         }
 
