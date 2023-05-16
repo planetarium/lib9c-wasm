@@ -271,7 +271,6 @@ public static class JsonUtils
                 .Select(t => ResolveType(t))
                 .Where(t => !string.IsNullOrEmpty(t))  // Filter out empty types
                 .ToArray();
-ß
             if (derivedTypes.Length > 0)
             {
                 return string.Join(" | ", derivedTypes);
