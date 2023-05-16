@@ -266,17 +266,54 @@ public static class JsonUtils
 
         if (type.IsInterface || type.IsAbstract)
         {
-            return string.Join(" | ", type.Assembly.GetTypes().Where(t => t.IsAssignableTo(type) && !t.IsAbstract && !t.IsInterface).Select(t => ResolveType(t)));
+            var derivedTypes = type.Assembly.GetTypes()
+                .Where(t => t.IsAssignableTo(type) && !t.IsAbstract && !t.IsInterface)
+                .Select(t => ResolveType(t))
+                .Where(t => !string.IsNullOrEmpty(t))  // Filter out empty types
+                .ToArray();
+
+            if (derivedTypes.Length > 0)
+            {
+                return string.Join(" | ", derivedTypes);
+            }
+            else
+            {
+                Console.Write($"No concrete implementations found for {type.FullName}, returning string 'invalid'");
+                return "invalid";
+            }
         }
 
         if (type.IsValueType || type.IsClass)
         {
+            bool IsIgnoredVariableName(string name)
+            {
+                return name == "errors"
+                    || name == "PlainValue"
+                    || name == "PlainValueInternal"
+                    || name.StartsWith("Extra");
+            }
+
+            bool IsIgnoredType(Type type)
+            {
+                return type.Name.EndsWith("BattleLog")
+                    || type.Name.EndsWith("Result")
+                    || type.Name.EndsWith("AvatarState")
+                    || type.Name.EndsWith("ArenaInfo")
+                    || type.Name.EndsWith("Digest");
+            }
+
+            if (IsIgnoredType(type))
+            {
+                return "invalid";
+            }
+
             StringBuilder builder = new StringBuilder();
             builder.Append("{");
 
             var stateInterfaceType = typeof(Nekoyume.Model.State.IState);
+            var stateType = type.IsAssignableTo(stateInterfaceType);
 
-            if (!type.IsAssignableTo(stateInterfaceType) &&
+            if (!stateType) &&
                 type.GetConstructors().Where(ctr =>
                     ctr.GetParameters().Length > 0 &&
                     !(ctr.GetParameters().Length == 1 && typeof(Bencodex.Types.IValue).IsAssignableFrom(ctr.GetParameters().First().ParameterType)) &&
@@ -296,23 +333,6 @@ public static class JsonUtils
                 builder.Append("}");
 
                 return builder.ToString();
-            }
-
-            bool IsIgnoredVariableName(string name)
-            {
-                return name == "errors"
-                    || name == "PlainValue"
-                    || name == "PlainValueInternal"
-                    || name.StartsWith("Extra");
-            }
-
-            bool IsIgnoredType(Type type)
-            {
-                return type.Name.EndsWith("BattleLog")
-                    || type.Name.EndsWith("Result")
-                    || type.Name.EndsWith("AvatarState")
-                    || type.Name.EndsWith("ArenaInfo")
-                    || type.Name.EndsWith("Digest");
             }
 
             NullabilityInfoContext context = new();
