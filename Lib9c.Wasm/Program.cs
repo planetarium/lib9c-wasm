@@ -35,8 +35,14 @@ public class Program
             .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) == actionTypeString);
         var fields = actionType.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => f.IsPublic);
         var properties = actionType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => p.CanWrite);
-        return ResolveType(actionType);
-        // return fields.Select(f => new Input(f.Name, ResolveType(f.FieldType, f.Name))).Concat(properties.Select(p => new Input(p.Name, ResolveType(p.PropertyType)))).ToArray();
+        // Map fields and properties to their TypeScript types
+        var inputs = fields.Select(f => $"{f.Name}: {ResolveType(f.FieldType)}").Concat(properties.Select(p => $"{p.Name}: {ResolveType(p.PropertyType)}")).ToArray();
+
+        // Combine the TypeScript types into a single object type
+        var typeInfo = "{" + string.Join(", ", inputs) + "}";
+
+        return typeInfo;
+
     }
 
     [JSInvokable]

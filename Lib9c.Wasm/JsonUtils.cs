@@ -271,7 +271,7 @@ public static class JsonUtils
                 .Select(t => ResolveType(t))
                 .Where(t => !string.IsNullOrEmpty(t))  // Filter out empty types
                 .ToArray();
-
+ß
             if (derivedTypes.Length > 0)
             {
                 return string.Join(" | ", derivedTypes);
@@ -313,7 +313,7 @@ public static class JsonUtils
             var stateInterfaceType = typeof(Nekoyume.Model.State.IState);
             var stateType = type.IsAssignableTo(stateInterfaceType);
 
-            if (!stateType) &&
+            if (!stateType &&
                 type.GetConstructors().Where(ctr =>
                     ctr.GetParameters().Length > 0 &&
                     !(ctr.GetParameters().Length == 1 && typeof(Bencodex.Types.IValue).IsAssignableFrom(ctr.GetParameters().First().ParameterType)) &&
