@@ -174,7 +174,9 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,rider,jetbrains+all,dotnetcore
 
-generated
+package/**/*
+Lib9c.Wasm/package/**/*
+
 docs
 dist
 

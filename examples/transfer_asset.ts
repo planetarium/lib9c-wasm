@@ -1,16 +1,13 @@
-import { transfer_asset2 } from "../generated/actions";
-import { buildUnsignedTransaction, attachSignature } from "../generated/tx";
-import { boot } from "../generated";
-
+import { transfer_asset3 } from "../generated/actions";
 import { parseHex, toHex } from "../utils";
 import { ec as EC } from "elliptic";
 import { createHash } from "crypto";
 import { Address, Currency } from "../generated/utils";
 
 async function main() {
-    await boot();
+    
 
-    const action = transfer_asset2({
+    const action = transfer_asset3({
         amount: {
             currency: new Currency({
                 ticker: "NCG",
