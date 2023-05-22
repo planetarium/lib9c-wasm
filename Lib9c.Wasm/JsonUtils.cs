@@ -254,6 +254,11 @@ public static class JsonUtils
             return "[" + string.Join(", ", type.GetGenericArguments().Select(t => ResolveType(t, fieldName = "'s tuple arg"))) + "]";
         }
 
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.ValueTuple<,>))
+        {
+            return "[" + string.Join(", ", type.GetGenericArguments().Select(t => ResolveType(t, fieldName = "'s tuple arg"))) + "]";
+        }
+
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Generic.ICollection<>))
         {
             return ResolveType(type.GetGenericArguments()[0], fieldName + "'s ICollection type arg") + "[]";
