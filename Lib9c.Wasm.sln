@@ -13,8 +13,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".Libplanet", ".Libplanet", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Libplanet", "lib9c\.Libplanet\Libplanet\Libplanet.csproj", "{850C9680-A495-4E00-8FD5-3B1E23B4EC93}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib9c.Wasm.Tests", "Lib9c.Wasm.Tests\Lib9c.Wasm.Tests.csproj", "{C4B98671-8D6F-4E76-96D8-9A9CB397A7AB}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,10 +34,6 @@ Global
 		{850C9680-A495-4E00-8FD5-3B1E23B4EC93}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{850C9680-A495-4E00-8FD5-3B1E23B4EC93}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{850C9680-A495-4E00-8FD5-3B1E23B4EC93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C4B98671-8D6F-4E76-96D8-9A9CB397A7AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C4B98671-8D6F-4E76-96D8-9A9CB397A7AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C4B98671-8D6F-4E76-96D8-9A9CB397A7AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C4B98671-8D6F-4E76-96D8-9A9CB397A7AB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D3751C02-80E9-444D-8637-5D7839F687DB} = {FB3CCBC4-366C-44AD-9BF7-491BF46F47C7}
