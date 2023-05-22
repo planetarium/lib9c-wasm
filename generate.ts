@@ -2,7 +2,7 @@ import { writeFileSync, existsSync, mkdirSync, copyFileSync } from "fs";
 import * as ts from "typescript";
 
 // Path when building with `yarn build` command.
-import dotnet from "./Lib9c.Wasm/bin/dotnet";
+import * as dotnet from "./Lib9c.Wasm/bin/dotnet";
 
 const file = ts.createSourceFile(
   "source.ts",
@@ -164,11 +164,9 @@ function generateActionsTsFile() {
     )
   );
 
-  const actionsFunctionDecls =
-    dotnet.Lib9c.Wasm.Program.GetAllActionTypes().flatMap((typeId: string) => {
-      if (
-        dotnet.Lib9c.Wasm.Program.GetAvailableInputs(typeId).includes("invalid")
-      ) {
+  const actionsFunctionDecls = dotnet.Lib9c.Wasm.getAllActionTypes().flatMap(
+    (typeId: string) => {
+      if (dotnet.Lib9c.Wasm.getAvailableInputs(typeId).includes("invalid")) {
         console.log(`${typeId} have invalid type, skipped.`);
         return [];
       }
@@ -198,7 +196,8 @@ function generateActionsTsFile() {
           true
         )
       );
-    });
+    }
+  );
 
   const nodeArray = ts.factory.createNodeArray([
     importDecl,
@@ -356,7 +355,7 @@ function generateStatesTsFile() {
 
   const allStateTypes = dotnet.Lib9c.Wasm.listAllStates();
   const aliasDecls: ts.TypeAliasDeclaration[] = [];
-  const deseiralizeFunctionDecls: ts.FunctionDeclaration[] = [];
+  const deserializeFunctionDecls: ts.FunctionDeclaration[] = [];
   for (const stateType of allStateTypes) {
     const className = stateType
       .replace(/^Nekoyume.Model./, "")
@@ -407,14 +406,14 @@ function generateStatesTsFile() {
         true
       )
     );
-    deseiralizeFunctionDecls.push(deserializeStateDecl);
+    deserializeFunctionDecls.push(deserializeStateDecl);
   }
 
   const nodeArray = ts.factory.createNodeArray([
     typesImportDecl,
     importDecl,
     ...aliasDecls,
-    ...deseiralizeFunctionDecls,
+    ...deserializeFunctionDecls,
   ]);
   const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
 
