@@ -34,7 +34,6 @@ async function main() {
 
   generateIndexTsFile();
   generateActionsTsFile();
-  generateTxTsFile();
   generateStatesTsFile();
 
   copyLib9cWasmFiles();
@@ -208,122 +207,6 @@ function generateActionsTsFile() {
   const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
 
   writeFileSync("./generated/actions.ts", result);
-}
-
-function generateTxTsFile() {
-  const buildUnsignedTransactionFunctionImpl =
-    ts.factory.createFunctionDeclaration(
-      exportModifiers,
-      undefined,
-      "buildUnsignedTransaction",
-      undefined,
-      [
-        ts.factory.createParameterDeclaration(
-          undefined,
-          undefined,
-          "nonce",
-          undefined,
-          ts.factory.createTypeReferenceNode("number")
-        ),
-        ts.factory.createParameterDeclaration(
-          undefined,
-          undefined,
-          "publicKey",
-          undefined,
-          ts.factory.createTypeReferenceNode("Uint8Array")
-        ),
-        ts.factory.createParameterDeclaration(
-          undefined,
-          undefined,
-          "signer",
-          undefined,
-          ts.factory.createTypeReferenceNode("Uint8Array")
-        ),
-        ts.factory.createParameterDeclaration(
-          undefined,
-          undefined,
-          "genesisHash",
-          undefined,
-          ts.factory.createTypeReferenceNode("Uint8Array")
-        ),
-        ts.factory.createParameterDeclaration(
-          undefined,
-          undefined,
-          "action",
-          undefined,
-          ts.factory.createTypeReferenceNode("Uint8Array")
-        ),
-      ],
-      ts.factory.createTypeReferenceNode("Uint8Array"),
-      ts.factory.createBlock(
-        [
-          ts.factory.createReturnStatement(
-            ts.factory.createCallExpression(
-              ts.factory.createIdentifier(
-                "dotnet.Lib9c.Wasm.buildRawTransaction"
-              ),
-              undefined,
-              [
-                ts.factory.createIdentifier("nonce"),
-                ts.factory.createIdentifier("publicKey"),
-                ts.factory.createIdentifier("signer"),
-                ts.factory.createIdentifier("genesisHash"),
-                ts.factory.createIdentifier("action"),
-              ]
-            )
-          ),
-        ],
-        true
-      )
-    );
-
-  const attachSignatureFunctionImpl = ts.factory.createFunctionDeclaration(
-    exportModifiers,
-    undefined,
-    "attachSignature",
-    undefined,
-    [
-      ts.factory.createParameterDeclaration(
-        undefined,
-        undefined,
-        "unsignedTx",
-        undefined,
-        ts.factory.createTypeReferenceNode("Uint8Array")
-      ),
-      ts.factory.createParameterDeclaration(
-        undefined,
-        undefined,
-        "signature",
-        undefined,
-        ts.factory.createTypeReferenceNode("Uint8Array")
-      ),
-    ],
-    ts.factory.createTypeReferenceNode("Uint8Array"),
-    ts.factory.createBlock(
-      [
-        ts.factory.createReturnStatement(
-          ts.factory.createCallExpression(
-            ts.factory.createIdentifier("dotnet.Lib9c.Wasm.attachSignature"),
-            undefined,
-            [
-              ts.factory.createIdentifier("unsignedTx"),
-              ts.factory.createIdentifier("signature"),
-            ]
-          )
-        ),
-      ],
-      true
-    )
-  );
-
-  const nodeArray = ts.factory.createNodeArray([
-    importDecl,
-    buildUnsignedTransactionFunctionImpl,
-    attachSignatureFunctionImpl,
-  ]);
-  const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
-
-  writeFileSync("./generated/tx.ts", result);
 }
 
 function generateStatesTsFile() {
