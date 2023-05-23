@@ -36,5 +36,5 @@
     "@ethersproject/address": "^5.7.0",
     "uuid": "^9.0.0"
   },
-  "packageManager": "yarn@3.2.4"
+  "packageManager": "yarn@3.5.1"
 }
