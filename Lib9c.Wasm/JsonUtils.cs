@@ -15,31 +15,11 @@ public static class JsonUtils
 
     public static object ConvertJsonElementTo(JsonElement element, Type targetType)
     {
-        if (targetType == typeof(Int32))
-        {
-            return element.GetInt32();
-        }
-
-        if (targetType == typeof(Int64))
-        {
-            return element.GetInt64();
-        }
-
         if (targetType == typeof(BigInteger))
         {
             string value = element.GetString() ?? throw new ArgumentNullException();
 
             return BigInteger.Parse(value);
-        }
-
-        if (targetType == typeof(Guid))
-        {
-            return element.GetGuid();
-        }
-
-        if (targetType == typeof(string))
-        {
-            return element.GetString() ?? throw new ArgumentNullException();
         }
 
         if (targetType == typeof(Libplanet.Assets.Currency))
@@ -55,26 +35,10 @@ public static class JsonUtils
 #pragma warning restore CS0618
         }
 
-        if (targetType == typeof(byte))
-        {
-            return element.GetByte();
-        }
-
         if (targetType == typeof(Address))
         {
             string addressString = element.GetString() ?? throw new ArgumentNullException();
             return new Address(addressString.Replace("0x", ""));
-        }
-
-        if (targetType.IsGenericType && targetType == typeof(System.Collections.Immutable.IImmutableSet<Address>))
-        {
-            var set = System.Collections.Immutable.ImmutableHashSet<Address>.Empty;
-            foreach (var el in element.EnumerateObject())
-            {
-                set = set.Add((Address)ConvertJsonElementTo(el.Value, typeof(Address)));
-            }
-
-            return set;
         }
 
         if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(List<>))
@@ -135,6 +99,9 @@ public static class JsonUtils
 
             return instance;
         }
+            PropertyNameCaseInsensitive = true
+        };
+        return JsonSerializer.Deserialize(element, targetType, options);
 
         throw new ArgumentOutOfRangeException(targetType.ToString());
     }
