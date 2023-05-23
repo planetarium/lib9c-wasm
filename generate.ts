@@ -34,7 +34,6 @@ async function main() {
 
   generateIndexTsFile();
   generateActionsTsFile();
-  generateStatesTsFile();
 
   copyLib9cWasmFiles();
   copyUtilsTs();
