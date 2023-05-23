@@ -78,6 +78,19 @@ public static class JsonUtils
             return Enum.Parse(targetType, element.GetString());
         }
 
+        if (element.ValueKind == JsonValueKind.Object &&
+            !targetType.IsAssignableTo(typeof(Nekoyume.Model.State.IState)) &&
+                targetType.GetConstructors().Where(ctr =>
+                    ctr.GetParameters().Length > 0 &&
+                    !(ctr.GetParameters().Length == 1 && typeof(Bencodex.Types.IValue).IsAssignableFrom(ctr.GetParameters().First().ParameterType)) &&
+                    !(ctr.GetParameters().Length == 2 && ctr.GetParameters().First().ParameterType == typeof(SerializationInfo) && ctr.GetParameters().Skip(1).First().ParameterType == typeof(StreamingContext))
+                ).OrderByDescending(x => x.GetParameters().Length).FirstOrDefault() is { } constructor)
+        {
+            return constructor.Invoke(constructor.GetParameters().Select(parameter => {
+                return ConvertJsonElementTo(element.GetProperty(parameter.Name), parameter.ParameterType);
+            }).ToArray());
+        }
+
         if (element.ValueKind == JsonValueKind.Object)
         {
             var instance = Activator.CreateInstance(targetType);

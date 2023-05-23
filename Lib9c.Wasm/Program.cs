@@ -59,8 +59,7 @@ public class Program
         // Combine the TypeScript types into a single object type
         var typeInfo = "{" + string.Join(", ", inputs) + "}";
 
-        return typeInfo;
-
+        return ResolveType(actionType);
     }
 
     [JSInvokable]
