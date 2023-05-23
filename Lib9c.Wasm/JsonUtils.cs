@@ -77,14 +77,6 @@ public static class JsonUtils
             return set;
         }
 
-        if (element.ValueKind == JsonValueKind.Object &&
-            (targetType.IsClass || targetType.IsValueType) &&
-            targetType.GetConstructors()
-                .Where(ctr => ctr.GetParameters().Length == element.EnumerateObject().Count()).FirstOrDefault() is { } constructor)
-        {
-            return constructor.Invoke(constructor.GetParameters().Select(parameter => ConvertJsonElementTo(element.GetProperty(parameter.Name), parameter.ParameterType)).ToArray());
-        }
-
         if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(List<>))
         {
             Type elementType = targetType.GetGenericArguments()[0];
@@ -127,11 +119,11 @@ public static class JsonUtils
             var instance = Activator.CreateInstance(targetType);
             foreach (var property in element.EnumerateObject())
             {
-                if (targetType.GetProperty(property.Name) is { } prop)
+                if (targetType.GetProperty(property.Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance) is { } prop)
                 {
                     prop.SetValue(instance, ConvertJsonElementTo(property.Value, prop.PropertyType));
                 }
-                else if (targetType.GetField(property.Name) is { } field)
+                else if (targetType.GetField(property.Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance) is { } field)
                 {
                     field.SetValue(instance, ConvertJsonElementTo(property.Value, field.FieldType));
                 }
