@@ -112,9 +112,8 @@ public static class JsonUtils
 
             return instance;
         }
-            PropertyNameCaseInsensitive = true
-        };
-        return JsonSerializer.Deserialize(element, targetType, options);
+
+        return JsonSerializer.Deserialize(element, targetType);
 
         throw new ArgumentOutOfRangeException(targetType.ToString());
     }

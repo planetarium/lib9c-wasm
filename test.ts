@@ -4,11 +4,11 @@ import { Currency, Address } from "./generated/utils";
 
 (async () => {
   await boot();
-  console.log(Buffer.from(stake({ Amount: "1000" })).toString("hex"));
+  console.log(Buffer.from(stake({ amount: "1000" })).toString("hex"));
   console.log(
     Buffer.from(
       transfer_asset3({
-        Amount: {
+        amount: {
           currency: new Currency({
             ticker: "NCG",
             decimalPlaces: 2,
@@ -18,9 +18,9 @@ import { Currency, Address } from "./generated/utils";
           majorUnit: "1000",
           minorUnit: "0",
         },
-        Sender: new Address("eb9afe072c781401bf364224c75a036e4d832f52"),
-        Recipient: new Address("eb9afe072c781401bf364224c75a036e4d832f52"),
-        Memo: "aaaa",
+        sender: new Address("eb9afe072c781401bf364224c75a036e4d832f52"),
+        recipient: new Address("eb9afe072c781401bf364224c75a036e4d832f52"),
+        memo: "aaaa",
       })
     ).toString("hex")
   );
