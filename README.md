@@ -1,5 +1,5 @@
 # lib9c-wasm
-[![npm version](https://badge.fury.io/js/lib9c-wasm.svg)](https://npmjs.com/package/lib9c-wasm)
+[![npm version](https://badge.fury.io/js/@planetarium%2Flib9c-wasm.svg)](https://npmjs.com/package/@planetarium/lib9c-wasm)
 
 The experimental project to part Lib9c into JavaScript environment through WASM.
 
