@@ -215,7 +215,7 @@ function copyLib9cWasmFiles() {
 }
 
 function copyUtilsTs() {
-  copyFileSync("./utils.ts", "generated/utils.ts");
+  copyFileSync("./static/utils.ts", "generated/utils.ts");
 }
 
 main().catch(console.error);

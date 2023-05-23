@@ -1,8 +1,6 @@
 import { hack_and_slash14 } from "../generated/actions";
 import { boot } from "../generated";
-import { Address } from "../generated/utils";
-
-import { toHex } from "../utils";
+import { Address, toHex } from "../generated/utils";
 
 async function main() {
     await boot();
