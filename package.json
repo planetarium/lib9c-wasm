@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/moreal/lib9c-wasm.git"
+    "url": "git+https://github.com/planetarium/lib9c-wasm.git"
   },
   "author": "Moreal",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/moreal/lib9c-wasm/issues"
+    "url": "https://github.com/planetarium/lib9c-wasm/issues"
   },
-  "homepage": "https://github.com/moreal/lib9c-wasm#readme",
+  "homepage": "https://github.com/planetarium/lib9c-wasm#readme",
   "devDependencies": {
     "@types/elliptic": "^6.4.14",
     "@types/node": "^18.7.18",

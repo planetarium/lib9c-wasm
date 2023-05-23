@@ -1,8 +1,7 @@
 import { transfer_asset2 } from "../generated/actions";
 import { boot } from "../generated";
 
-import { toHex } from "../utils";
-import { Address, Currency } from "../generated/utils";
+import { Address, Currency, toHex } from "../generated/utils";
 
 async function main() {
     await boot();

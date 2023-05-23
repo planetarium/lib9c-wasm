@@ -1,7 +1,7 @@
 import { stake } from "../generated/actions";
 import { boot } from "../generated";
 
-import { toHex } from "../utils";
+import { toHex } from "../static/utils";
 
 async function main() {
     await boot();
