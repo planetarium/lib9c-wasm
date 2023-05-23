@@ -74,19 +74,6 @@ public class Program
     }
 
     [JSInvokable]
-    public static byte[] BuildRawTransaction(long nonce, byte[] publicKey, byte[] address, byte[] genesisHash, byte[] action)
-    {
-        var tx = new RawUnsignedTransaction(nonce, publicKey, address, genesisHash, action, DateTimeOffset.UtcNow);
-        return tx.Serialize();
-    }
-
-    [JSInvokable]
-    public static byte[] AttachSignature(byte[] unsignedTransaction, byte[] signature)
-    {
-        return RawUnsignedTransaction.Deserialize(unsignedTransaction).AttachSignature(signature).Serialize();
-    }
-
-    [JSInvokable]
     public static string[] ListAllStates()
     {
         Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
