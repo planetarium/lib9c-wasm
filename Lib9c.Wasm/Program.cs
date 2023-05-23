@@ -12,7 +12,8 @@ public class Program
 {
     public static void Main()
     {
-        JS.Runtime.ConfigureJson(options => {
+        JS.Runtime.ConfigureJson(options =>
+        {
             options.IncludeFields = true;
         });
     }
@@ -24,25 +25,49 @@ public class Program
     {
         var types = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
             .Where(t => t.IsDefined(typeof(ActionTypeAttribute)) && t != typeof(InitializeStates) && t != typeof(CreatePendingActivations));
-        return types.Select(x => ActionTypeAttribute.ValueOf(x)).ToArray();
+        return types.Select(x => ActionTypeAttribute.ValueOf(x)).Where(x => x is Bencodex.Types.Text).Select(x => ((Bencodex.Types.Text)x).Value).ToArray();
     }
 
     [JSInvokable]
     public static string GetAvailableInputs(string actionTypeString)
     {
+        bool IsIgnoredVariableName(string name)
+        {
+            return name == "errors"
+                || name == "PlainValue"
+                || name == "PlainValueInternal"
+                || name.StartsWith("Extra");
+        }
+
+        bool IsIgnoredType(Type type)
+        {
+            return type.Name.EndsWith("BattleLog")
+                || type.Name.EndsWith("Result")
+                || type.Name.EndsWith("AvatarState")
+                || type.Name.EndsWith("ArenaInfo")
+                || type.Name.EndsWith("Digest");
+        }
+
         Type actionType = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
-            .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) == actionTypeString);
-        var fields = actionType.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => f.IsPublic);
-        var properties = actionType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => p.CanWrite);
-        return ResolveType(actionType);
-        // return fields.Select(f => new Input(f.Name, ResolveType(f.FieldType, f.Name))).Concat(properties.Select(p => new Input(p.Name, ResolveType(p.PropertyType)))).ToArray();
+            .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) is Bencodex.Types.Text text && text.Value == actionTypeString);
+
+        var fields = actionType.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => f.IsPublic && !IsIgnoredVariableName(f.Name) && !IsIgnoredType(f.FieldType));
+        var properties = actionType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => p.CanWrite && !IsIgnoredVariableName(p.Name) && !IsIgnoredType(p.PropertyType));
+        // Map fields and properties to their TypeScript types
+        var inputs = fields.Select(f => $"{f.Name}: {ResolveType(f.FieldType)}").Concat(properties.Select(p => $"{p.Name}: {ResolveType(p.PropertyType)}")).ToArray();
+
+        // Combine the TypeScript types into a single object type
+        var typeInfo = "{" + string.Join(", ", inputs) + "}";
+
+        return typeInfo;
+
     }
 
     [JSInvokable]
     public static byte[] BuildAction(string actionTypeString, JsonElement dictionary)
     {
         Type actionType = typeof(Nekoyume.Action.ActionBase).Assembly.GetTypes()
-            .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) == actionTypeString);
+            .First(t => t.IsDefined(typeof(ActionTypeAttribute)) && ActionTypeAttribute.ValueOf(t) is Bencodex.Types.Text text && text.Value == actionTypeString);
 
         var action = (IAction)ConvertJsonElementTo(dictionary, actionType);
         return new Codec().Encode(((PolymorphicAction<ActionBase>)(dynamic)action).PlainValue);
@@ -81,10 +106,11 @@ public class Program
     {
         var codec = new Codec();
         var decoded = codec.Decode(bytes);
-        
+
         Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
         Type stateType = stateInterfaceType.Assembly.GetType(typeFullName);
-        if (stateType is null) {
+        if (stateType is null)
+        {
             Console.Error.WriteLine("stateType is null");
         }
 
@@ -98,7 +124,8 @@ public class Program
     {
         Type stateInterfaceType = typeof(Nekoyume.Model.State.IState);
         Type stateType = stateInterfaceType.Assembly.GetType(typeFullName);
-        if (stateType is null) {
+        if (stateType is null)
+        {
             Console.Error.WriteLine("stateType is null");
         }
 

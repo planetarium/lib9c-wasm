@@ -77,14 +77,6 @@ public static class JsonUtils
             return set;
         }
 
-        if (element.ValueKind == JsonValueKind.Object &&
-            (targetType.IsClass || targetType.IsValueType) &&
-            targetType.GetConstructors()
-                .Where(ctr => ctr.GetParameters().Length == element.EnumerateObject().Count()).FirstOrDefault() is { } constructor)
-        {
-            return constructor.Invoke(constructor.GetParameters().Select(parameter => ConvertJsonElementTo(element.GetProperty(parameter.Name), parameter.ParameterType)).ToArray());
-        }
-
         if (targetType.IsGenericType && targetType.GetGenericTypeDefinition() == typeof(List<>))
         {
             Type elementType = targetType.GetGenericArguments()[0];
@@ -127,11 +119,11 @@ public static class JsonUtils
             var instance = Activator.CreateInstance(targetType);
             foreach (var property in element.EnumerateObject())
             {
-                if (targetType.GetProperty(property.Name) is { } prop)
+                if (targetType.GetProperty(property.Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance) is { } prop)
                 {
                     prop.SetValue(instance, ConvertJsonElementTo(property.Value, prop.PropertyType));
                 }
-                else if (targetType.GetField(property.Name) is { } field)
+                else if (targetType.GetField(property.Name, BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance) is { } field)
                 {
                     field.SetValue(instance, ConvertJsonElementTo(property.Value, field.FieldType));
                 }
@@ -254,6 +246,11 @@ public static class JsonUtils
             return "[" + string.Join(", ", type.GetGenericArguments().Select(t => ResolveType(t, fieldName = "'s tuple arg"))) + "]";
         }
 
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.ValueTuple<,>))
+        {
+            return "[" + string.Join(", ", type.GetGenericArguments().Select(t => ResolveType(t, fieldName = "'s tuple arg"))) + "]";
+        }
+
         if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(System.Collections.Generic.ICollection<>))
         {
             return ResolveType(type.GetGenericArguments()[0], fieldName + "'s ICollection type arg") + "[]";
@@ -266,17 +263,53 @@ public static class JsonUtils
 
         if (type.IsInterface || type.IsAbstract)
         {
-            return string.Join(" | ", type.Assembly.GetTypes().Where(t => t.IsAssignableTo(type) && !t.IsAbstract && !t.IsInterface).Select(t => ResolveType(t)));
+            var derivedTypes = type.Assembly.GetTypes()
+                .Where(t => t.IsAssignableTo(type) && !t.IsAbstract && !t.IsInterface)
+                .Select(t => ResolveType(t))
+                .Where(t => !string.IsNullOrEmpty(t))  // Filter out empty types
+                .ToArray();
+            if (derivedTypes.Length > 0)
+            {
+                return string.Join(" | ", derivedTypes);
+            }
+            else
+            {
+                Console.Write($"No concrete implementations found for {type.FullName}, returning string 'invalid'");
+                return "invalid";
+            }
         }
 
         if (type.IsValueType || type.IsClass)
         {
+            bool IsIgnoredVariableName(string name)
+            {
+                return name == "errors"
+                    || name == "PlainValue"
+                    || name == "PlainValueInternal"
+                    || name.StartsWith("Extra");
+            }
+
+            bool IsIgnoredType(Type type)
+            {
+                return type.Name.EndsWith("BattleLog")
+                    || type.Name.EndsWith("Result")
+                    || type.Name.EndsWith("AvatarState")
+                    || type.Name.EndsWith("ArenaInfo")
+                    || type.Name.EndsWith("Digest");
+            }
+
+            if (IsIgnoredType(type))
+            {
+                return "any";
+            }
+
             StringBuilder builder = new StringBuilder();
             builder.Append("{");
 
             var stateInterfaceType = typeof(Nekoyume.Model.State.IState);
+            var stateType = type.IsAssignableTo(stateInterfaceType);
 
-            if (!type.IsAssignableTo(stateInterfaceType) &&
+            if (!stateType &&
                 type.GetConstructors().Where(ctr =>
                     ctr.GetParameters().Length > 0 &&
                     !(ctr.GetParameters().Length == 1 && typeof(Bencodex.Types.IValue).IsAssignableFrom(ctr.GetParameters().First().ParameterType)) &&
@@ -298,24 +331,7 @@ public static class JsonUtils
                 return builder.ToString();
             }
 
-            bool IsIgnoredVariableName(string name)
-            {
-                return name == "errors"
-                    || name == "PlainValue"
-                    || name == "PlainValueInternal"
-                    || name.StartsWith("Extra");
-            }
-
-            bool IsIgnoredType(Type type)
-            {
-                return type.Name.EndsWith("BattleLog")
-                    || type.Name.EndsWith("Result")
-                    || type.Name.EndsWith("AvatarState")
-                    || type.Name.EndsWith("ArenaInfo")
-                    || type.Name.EndsWith("Digest");
-            }
-
-            NullabilityInfoContext context = new ();
+            NullabilityInfoContext context = new();
 
             var fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance).Where(f => !IsIgnoredVariableName(f.Name) && !IsIgnoredType(f.FieldType));
             var properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance).Where(p => !IsIgnoredVariableName(p.Name) && !IsIgnoredType(p.PropertyType));
@@ -334,7 +350,8 @@ public static class JsonUtils
                     continue;
                 }
 
-                if (p.Name.IndexOf(".") != -1) {
+                if (p.Name.IndexOf(".") != -1)
+                {
                     continue;
                 }
 
