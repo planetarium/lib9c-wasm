@@ -114,8 +114,6 @@ public static class JsonUtils
         }
 
         return JsonSerializer.Deserialize(element, targetType);
-
-        throw new ArgumentOutOfRangeException(targetType.ToString());
     }
 
     public static string ResolveType(Type type, string fieldName = "")
