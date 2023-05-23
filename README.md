@@ -7,10 +7,10 @@ The experimental project to part Lib9c into JavaScript environment through WASM.
 
 ```
 # yarn
-yarn add lib9c-wasm
+yarn add @planetarium/lib9c-wasm
 
 # npm
-npm install lib9c-wasm
+npm install @planetarium/lib9c-wasm
 ```
 
 ## Examples
