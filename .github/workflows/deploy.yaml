@@ -1,0 +1,41 @@
+on:
+  push:
+    branches:
+      - "main"
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    - uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '6.0.x'
+    - uses: actions/setup-node@v3
+      with:
+        registry-url: 'https://registry.npmjs.org'
+        scope: '@planetarium'
+        node-version: 'lts/*'
+    - run: yarn
+      name: Install dependencies
+    - name: Prepare version for dev release
+      if: ${{ github.ref_type != 'tag' }}
+      run: |
+        version="$(jq -r ".version" package.json)-dev.$(git rev-parse --short HEAD)"
+        jq --arg v "$version" '.version = $v' package.json > package.json.tmp
+        mv package.json.tmp package.json
+    - name: Prepare 'yarn pack'
+      run: yarn prepare-pack
+    - name: Pack
+      run: yarn pack
+    - name: Publish (dev)
+      run: npm publish --access public --tag dev package.tgz
+      if: ${{ github.ref_type != 'tag' }}
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
+    - name: Publish
+      run: npm publish --access public --tag latest package.tgz
+      if: ${{ github.ref_type == 'tag' }}
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
