@@ -300,7 +300,7 @@ public static class JsonUtils
 
             if (IsIgnoredType(type))
             {
-                return "invalid";
+                return "any";
             }
 
             StringBuilder builder = new StringBuilder();
