@@ -86,7 +86,8 @@ public static class JsonUtils
                     !(ctr.GetParameters().Length == 2 && ctr.GetParameters().First().ParameterType == typeof(SerializationInfo) && ctr.GetParameters().Skip(1).First().ParameterType == typeof(StreamingContext))
                 ).OrderByDescending(x => x.GetParameters().Length).FirstOrDefault() is { } constructor)
         {
-            return constructor.Invoke(constructor.GetParameters().Select(parameter => {
+            return constructor.Invoke(constructor.GetParameters().Select(parameter =>
+            {
                 return ConvertJsonElementTo(element.GetProperty(parameter.Name), parameter.ParameterType);
             }).ToArray());
         }
