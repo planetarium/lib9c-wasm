@@ -1,6 +1,6 @@
 {
   "name": "@planetarium/lib9c-wasm",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Lib9c WASM library",
   "main": "dist/index.js",
   "scripts": {
