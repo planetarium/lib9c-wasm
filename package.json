@@ -10,7 +10,7 @@
     "prepare-pack": "yarn compile; rm -rf dist; mkdir dist; cp -r generated/*.{js,d.ts} README.md package.json dist",
     "custom-pack": "bash -c 'pushd dist; npm pack; mv planetarium-lib9c-wasm-*.tgz ..; popd'",
     "clean-dotnet": "rm -rf ./Lib9c.Wasm/bin/; dotnet publish",
-    "build-wrapper": "ts-node ./generate.ts",
+    "build-wrapper": "ts-node ./patch.ts ./Lib9c.Wasm/bin/dotnet.js && ts-node ./generate.ts",
     "generate-docs": "yarn build; typedoc --out docs ./generated/*.ts --exclude generated/dotnet*"
   },
   "repository": {
