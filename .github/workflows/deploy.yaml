@@ -28,14 +28,14 @@ jobs:
     - name: Prepare 'yarn pack'
       run: yarn prepare-pack
     - name: Pack
-      run: yarn pack
+      run: yarn custom-pack
     - name: Publish (dev)
-      run: npm publish --access public --tag dev package.tgz
+      run: npm publish --access public --tag dev planetarium-lib9c-wasm-*.tgz
       if: ${{ github.ref_type != 'tag' }}
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}
     - name: Publish
-      run: npm publish --access public --tag latest package.tgz
+      run: npm publish --access public --tag latest planetarium-lib9c-wasm-*.tgz
       if: ${{ github.ref_type == 'tag' }}
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NODE_AUTH_TOKEN }}

@@ -2,15 +2,15 @@
   "name": "@planetarium/lib9c-wasm",
   "version": "0.0.4",
   "description": "Lib9c WASM library",
-  "main": "dist/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn clean-dotnet; yarn build-wrapper",
     "compile": "yarn build; yarn tsc",
     "prepare-pack": "yarn compile; rm -rf dist; mkdir dist; cp -r generated/*.{js,d.ts} README.md package.json dist",
-    "custom-pack": "pushd dist; npm pack; mv lib9c-wasm-*.tgz ..; popd",
+    "custom-pack": "bash -c 'pushd dist; npm pack; mv planetarium-lib9c-wasm-*.tgz ..; popd'",
     "clean-dotnet": "rm -rf ./Lib9c.Wasm/bin/; dotnet publish",
-    "build-wrapper": "ts-node ./generate.ts",
+    "build-wrapper": "ts-node ./patch.ts ./Lib9c.Wasm/bin/dotnet.js && ts-node ./generate.ts",
     "generate-docs": "yarn build; typedoc --out docs ./generated/*.ts --exclude generated/dotnet*"
   },
   "repository": {
