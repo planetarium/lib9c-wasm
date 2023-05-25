@@ -64,7 +64,12 @@ function generateIndexTsFile() {
   const nodeArray = ts.factory.createNodeArray([importDecl, bootFunctionImpl]);
   const result = printer.printList(ts.ListFormat.MultiLine, nodeArray, file);
 
-  writeFileSync("./generated/index.ts", result);
+  writeFileSync(
+    "./generated/index.ts",
+    result.concat(
+      'export * from "./actions"\nexport * from "./utils";'
+    )
+  );
 }
 
 function generateActionsTsFile() {

@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "yarn clean-dotnet; yarn build-wrapper",
     "compile": "yarn build; yarn tsc",
-    "prepare-pack": "yarn compile; rm -rf dist; mkdir dist; cp -r generated/*.{js,d.ts} README.md package.json dist",
+    "prepare-pack": "yarn compile; rm -rf dist; mkdir dist; cp -r generated/*.{js,d.ts,ts} README.md package.json dist",
     "custom-pack": "bash -c 'pushd dist; npm pack; mv planetarium-lib9c-wasm-*.tgz ..; popd'",
     "clean-dotnet": "rm -rf ./Lib9c.Wasm/bin/; dotnet publish",
     "build-wrapper": "ts-node ./patch.ts ./Lib9c.Wasm/bin/dotnet.js && ts-node ./generate.ts",
