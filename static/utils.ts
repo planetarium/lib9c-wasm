@@ -1,4 +1,5 @@
 import { validate as validateUUID } from "uuid";
+import { isAddress } from "@ethersproject/address"
 
 interface DotnetType {
     serializeAsDotnet(): any;
