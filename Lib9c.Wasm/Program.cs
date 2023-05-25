@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Text.Json;
 using System.Runtime.InteropServices.JavaScript;
 using System.Runtime.Versioning;
 using Bencodex;
@@ -12,13 +11,9 @@ namespace Lib9c.Wasm;
 [SupportedOSPlatform("browser")]
 public partial class Program
 {
-
-    public static void Main()
+     public static void Main()
     {
-        JS.Runtime.ConfigureJson(options =>
-        {
-            options.IncludeFields = true;
-        });
+        
     }
 
     public record Input(string Name, string Type);

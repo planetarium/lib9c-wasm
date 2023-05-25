@@ -36,6 +36,7 @@
   },
   "dependencies": {
     "@ethersproject/address": "^5.7.0",
+    "@microsoft/dotnet-runtime": "file:./packages/dotnet-runtime/",
     "uuid": "^9.0.0"
   },
   "packageManager": "yarn@3.5.1"

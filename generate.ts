@@ -1,6 +1,9 @@
-import { writeFileSync, existsSync, mkdirSync, copyFileSync } from "fs";
-import ts from "typescript";
-import { dotnet } from "./package/dotnet.js";
+import { writeFileSync, existsSync, mkdirSync, copyFileSync } from "node:fs";
+import * as ts from "typescript";
+import {
+  dotnet,
+  getTypedAssemblyExports,
+} from "./packages/dotnet-runtime/dotnet.js";
 
 const file = ts.createSourceFile(
   "source.ts",
@@ -23,18 +26,15 @@ const exportModifiers = [
   ts.factory.createModifier(ts.SyntaxKind.ExportKeyword),
 ];
 
-const { setModuleImports, getAssemblyExports, getConfig } =
-  await dotnet.create();
-const config = getConfig();
-const Lib9c = await getAssemblyExports(config.mainAssemblyName!);
-
 async function main() {
   if (!existsSync("./generated")) {
     mkdirSync("./generated");
   }
 
+  const { runtimeId } = await dotnet.withDiagnosticTracing(false).create();
+
   generateIndexTsFile();
-  generateActionsTsFile();
+  await generateActionsTsFile(runtimeId);
 
   copyUtilsTs();
 }
@@ -66,17 +66,19 @@ function generateIndexTsFile() {
 
   writeFileSync(
     "./generated/index.ts",
-    result.concat(
-      'export * from "./actions"\nexport * from "./utils";'
-    )
+    result.concat('export * from "./actions"\nexport * from "./utils";')
   );
 }
 
-function generateActionsTsFile() {
+async function generateActionsTsFile(runtimeId: number) {
+  const { getAssemblyExports } = global.getDotnetRuntime(runtimeId)!;
+  const Lib9c = await getTypedAssemblyExports(
+    getAssemblyExports("Lib9c.Wasm.dll")
+  );
   function generateBuildActionFunctionParameters(
     typeId: string
   ): readonly ts.ParameterDeclaration[] {
-    const inputs = Lib9c.Lib9c.Wasm.Program.GetAvailableInputs(typeId);
+    const inputs = Lib9c.Program.GetAvailableInputs(typeId);
     const plainValueType = ts.factory.createTypeReferenceNode(inputs);
     return [
       ts.factory.createParameterDeclaration(
@@ -147,7 +149,7 @@ function generateActionsTsFile() {
       [
         ts.factory.createReturnStatement(
           ts.factory.createCallExpression(
-            ts.factory.createIdentifier("Lib9c.Lib9c.Wasm.Program.BuildAction"),
+            ts.factory.createIdentifier("Lib9c.Program.BuildAction"),
             undefined,
             [
               ts.factory.createIdentifier("typeId"),
@@ -167,11 +169,9 @@ function generateActionsTsFile() {
     )
   );
 
-  const actionsFunctionDecls =
-    Lib9c.Lib9c.Wasm.Program.GetAllActionTypes().flatMap((typeId: string) => {
-      if (
-        Lib9c.Lib9c.Wasm.Program.GetAvailableInputs(typeId).includes("invalid")
-      ) {
+  const actionsFunctionDecls = Lib9c.Program.GetAllActionTypes().flatMap(
+  (typeId: string) => {
+      if (Lib9c.Program.GetAvailableInputs(typeId).includes("invalid")) {
         console.log(`${typeId} have invalid type, skipped.`);
         return [];
       }
@@ -202,7 +202,8 @@ function generateActionsTsFile() {
           true
         )
       );
-    });
+    }
+  );
 
   const nodeArray = ts.factory.createNodeArray([
     importDecl,

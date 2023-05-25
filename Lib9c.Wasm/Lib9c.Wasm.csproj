@@ -6,7 +6,7 @@
     <TargetArchitecture>wasm</TargetArchitecture>
     <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
     <ImplicitUsings>enable</ImplicitUsings>
-    <WasmMainJSPath>index.js</WasmMainJSPath>
+    <WasmMainJSPath>index.mts</WasmMainJSPath>
     <Nullable>enable</Nullable>
     <NullabilityInfoContextSupport>true</NullabilityInfoContextSupport>
     <WasmNativeStrip>true</WasmNativeStrip>
@@ -21,13 +21,14 @@
     <DebuggerSupport>false</DebuggerSupport>
     <WasmEmitSymbolMap>true</WasmEmitSymbolMap>    
     <!-- Compress -->
-    <CompressionIncludePatterns>$(CompressionIncludePatterns);_framework\**</CompressionIncludePatterns>
-    <DisableBuildCompression Condition="'$(WasmBuildingForNestedPublish)' == 'true'">true</DisableBuildCompression>
+    <JSPortOverrideTypeDefinitionOutputDir>/Users/akamig/code/work/lib9c-wasm/Lib9c.Wasm/bin/Debug/net7.0/browser-wasm/</JSPortOverrideTypeDefinitionOutputDir>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\lib9c\Lib9c\Lib9c.csproj" />
     <ProjectReference Include="..\libplanet\Libplanet\Libplanet.csproj" />
+    <PackageReference Include="NetWebAssemblyTSTypeGenerator" Version="*" OutputItemType="Analyzer" />
+    <CompilerVisibleProperty Include="JSPortOverrideTypeDefinitionOutputDir" />
   </ItemGroup>
 
   <Target Name="CopyRelinkedPackage" AfterTargets="WasmBuildApp" DependsOnTargets="Build" Inputs="$(WasmAppDir)/dotnet.js;
@@ -36,12 +37,13 @@
           $(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/dotnet-legacy.d.ts;
           $(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/package.json;" Outputs="bin/dotnet-runtime/.yarn-stamp">
     <ItemGroup>
+      <YarnPackageFiles Include="$(WasmAppDir)/../index.d.ts"/>
       <YarnPackageFiles Include="$(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/dotnet.d.ts"/>
       <YarnPackageFiles Include="$(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/dotnet-legacy.d.ts"/>
       <YarnPackageFiles Include="$(MicrosoftNetCoreAppRuntimePackDir)/runtimes/browser-wasm/native/package.json"/>
     </ItemGroup>
-    <Exec Command="rm index.html index.js; cp -r . $(MSBuildProjectDirectory)/package" WorkingDirectory="$(WasmAppDir)"/>
-    <Copy SourceFiles="@(YarnPackageFiles)" DestinationFolder="package" />
+        <Exec Command="rm index.html index.js; mkdir $(MSBuildProjectDirectory)/package; cp -r . $(MSBuildProjectDirectory)/package" WorkingDirectory="$(WasmAppDir)"/>
+        <Copy SourceFiles="@(YarnPackageFiles)" DestinationFolder="package" />
   </Target>
 
 </Project>
