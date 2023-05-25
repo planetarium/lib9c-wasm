@@ -1,0 +1,9 @@
+{
+  "name": "dotnet-webassembly-type-helper",
+  "description": "Generated files",
+  "version": "1.0.0",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "private": true,
+  "type": "module"
+}
