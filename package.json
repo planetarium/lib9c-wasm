@@ -24,12 +24,9 @@
   },
   "homepage": "https://github.com/planetarium/lib9c-wasm#readme",
   "devDependencies": {
-    "@types/elliptic": "^6.4.14",
     "@types/node": "^18.7.18",
     "@types/uuid": "^8.3.4",
-    "elliptic": "^6.5.4",
     "ts-node": "^10.9.1",
-    "typedoc": "^0.23.14",
     "typescript": "^5.0.4"
   },
   "dependencies": {
