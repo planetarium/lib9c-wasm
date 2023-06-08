@@ -1,0 +1,310 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charSet="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>raid6 | @planetarium/lib9c-wasm</title><meta name="description" content="Documentation for @planetarium/lib9c-wasm"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/search.js" id="tsd-search-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os"</script><header class="tsd-page-toolbar">
+<div class="tsd-toolbar-contents container">
+<div class="table-cell" id="tsd-search" data-base="..">
+<div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M15.7824 13.833L12.6666 10.7177C12.5259 10.5771 12.3353 10.499 12.1353 10.499H11.6259C12.4884 9.39596 13.001 8.00859 13.001 6.49937C13.001 2.90909 10.0914 0 6.50048 0C2.90959 0 0 2.90909 0 6.49937C0 10.0896 2.90959 12.9987 6.50048 12.9987C8.00996 12.9987 9.39756 12.4863 10.5008 11.6239V12.1332C10.5008 12.3332 10.5789 12.5238 10.7195 12.6644L13.8354 15.7797C14.1292 16.0734 14.6042 16.0734 14.8948 15.7797L15.7793 14.8954C16.0731 14.6017 16.0731 14.1267 15.7824 13.833ZM6.50048 10.499C4.29094 10.499 2.50018 8.71165 2.50018 6.49937C2.50018 4.29021 4.28781 2.49976 6.50048 2.49976C8.71001 2.49976 10.5008 4.28708 10.5008 6.49937C10.5008 8.70852 8.71314 10.499 6.50048 10.499Z" fill="var(--color-text)"></path></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div>
+<div class="field">
+<div id="tsd-toolbar-links"></div></div>
+<ul class="results">
+<li class="state loading">Preparing search index...</li>
+<li class="state failure">The search index is not available</li></ul><a href="../index.html" class="title">@planetarium/lib9c-wasm</a></div>
+<div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="1" y="3" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="7" width="14" height="2" fill="var(--color-text)"></rect><rect x="1" y="11" width="14" height="2" fill="var(--color-text)"></rect></svg></a></div></div></header>
+<div class="container container-main">
+<div class="col-content">
+<div class="tsd-page-title">
+<ul class="tsd-breadcrumb">
+<li><a href="../index.html">@planetarium/lib9c-wasm</a></li>
+<li><a href="../modules/actions.html">actions</a></li>
+<li><a href="actions.raid6.html">raid6</a></li></ul>
+<h1>Function raid6</h1></div>
+<section class="tsd-panel">
+<ul class="tsd-signatures">
+<li class="tsd-signature tsd-anchor-link" id="raid6"><span class="tsd-kind-call-signature">raid6</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">plainValue</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type ">Uint8Array</span><a href="#raid6" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><g stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" id="icon-anchor"><path stroke="none" d="M0 0h24v24H0z" fill="none"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5"></path></g></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5><span class="tsd-kind-parameter">plainValue</span>: <span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">AvatarAddress</span><span class="tsd-signature-symbol">: </span><a href="../classes/utils.Address.html" class="tsd-signature-type tsd-kind-class">Address</a><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">CostumeIds</span><span class="tsd-signature-symbol">: </span><a href="../classes/utils.Guid.html" class="tsd-signature-type tsd-kind-class">Guid</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">EquipmentIds</span><span class="tsd-signature-symbol">: </span><a href="../classes/utils.Guid.html" class="tsd-signature-type tsd-kind-class">Guid</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">FoodIds</span><span class="tsd-signature-symbol">: </span><a href="../classes/utils.Guid.html" class="tsd-signature-type tsd-kind-class">Guid</a><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">PayNcg</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">RuneInfos</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span><br/><span>        </span><span class="tsd-kind-property">runeId</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>        </span><span class="tsd-kind-property">slotIndex</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></h5>
+<ul class="tsd-parameters">
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">Avatar<wbr/>Address</span><span class="tsd-signature-symbol">: </span><a href="../classes/utils.Address.html" class="tsd-signature-type tsd-kind-class">Address</a></h5></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">Costume<wbr/>Ids</span><span class="tsd-signature-symbol">: </span><a href="../classes/utils.Guid.html" class="tsd-signature-type tsd-kind-class">Guid</a><span class="tsd-signature-symbol">[]</span></h5></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">Equipment<wbr/>Ids</span><span class="tsd-signature-symbol">: </span><a href="../classes/utils.Guid.html" class="tsd-signature-type tsd-kind-class">Guid</a><span class="tsd-signature-symbol">[]</span></h5></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">Food<wbr/>Ids</span><span class="tsd-signature-symbol">: </span><a href="../classes/utils.Guid.html" class="tsd-signature-type tsd-kind-class">Guid</a><span class="tsd-signature-symbol">[]</span></h5></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">Pay<wbr/>Ncg</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5></li>
+<li class="tsd-parameter">
+<h5><span class="tsd-kind-property">Rune<wbr/>Infos</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span><span class="tsd-kind-property">runeId</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span>    </span><span class="tsd-kind-property">slotIndex</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">[]</span></h5></li></ul></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type ">Uint8Array</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in actions.ts:498</li></ul></aside></li></ul></section></div>
+<div class="col-sidebar">
+<div class="page-menu">
+<div class="tsd-navigation settings">
+<details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
+<h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M4.93896 8.531L12 15.591L19.061 8.531L16.939 6.409L12 11.349L7.06098 6.409L4.93896 8.531Z" fill="var(--color-text)" id="icon-chevronDown"></path></svg>Settings</h3></summary>
+<div class="tsd-accordion-details">
+<div class="tsd-filter-visibility">
+<h4 class="uppercase">Member Visibility</h4><form>
+<ul id="tsd-filter-options">
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-private" name="private"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Private</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li>
+<li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></form></div>
+<div class="tsd-theme-toggle">
+<h4 class="uppercase">Theme</h4><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div></div>
+<div class="site-menu">
+<nav class="tsd-navigation"><a href="../index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-4"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-namespace)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.33 16V7.24H10.77L13.446 14.74C13.43 14.54 13.41 14.296 13.386 14.008C13.37 13.712 13.354 13.404 13.338 13.084C13.33 12.756 13.326 12.448 13.326 12.16V7.24H14.37V16H12.93L10.266 8.5C10.282 8.692 10.298 8.936 10.314 9.232C10.33 9.52 10.342 9.828 10.35 10.156C10.366 10.476 10.374 10.784 10.374 11.08V16H9.33Z" fill="var(--color-text)"></path></g></svg><span>@planetarium/lib9c-<wbr/>wasm</span></a>
+<ul class="tsd-small-nested-navigation">
+<li>
+<details class="tsd-index-accordion" open data-key="actions"><summary class="tsd-accordion-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="#icon-chevronDown"></use></svg><a href="../modules/actions.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>actions</span></a></summary>
+<div class="tsd-accordion-details">
+<ul class="tsd-nested-navigation">
+<li><a href="actions.activate_account.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><g id="icon-64"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-function)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6"></rect><path d="M9.39 16V7.24H14.55V8.224H10.446V11.128H14.238V12.112H10.47V16H9.39Z" fill="var(--color-text)"></path></g></svg><span>activate_<wbr/>account</span></a></li>
+<li><a href="actions.activate_account2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>activate_<wbr/>account2</span></a></li>
+<li><a href="actions.add_activated_account.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>add_<wbr/>activated_<wbr/>account</span></a></li>
+<li><a href="actions.add_activated_account2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>add_<wbr/>activated_<wbr/>account2</span></a></li>
+<li><a href="actions.add_redeem_code.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>add_<wbr/>redeem_<wbr/>code</span></a></li>
+<li><a href="actions.battle_arena.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena</span></a></li>
+<li><a href="actions.battle_arena10.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena10</span></a></li>
+<li><a href="actions.battle_arena11.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena11</span></a></li>
+<li><a href="actions.battle_arena12.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena12</span></a></li>
+<li><a href="actions.battle_arena2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena2</span></a></li>
+<li><a href="actions.battle_arena3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena3</span></a></li>
+<li><a href="actions.battle_arena4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena4</span></a></li>
+<li><a href="actions.battle_arena5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena5</span></a></li>
+<li><a href="actions.battle_arena6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena6</span></a></li>
+<li><a href="actions.battle_arena7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena7</span></a></li>
+<li><a href="actions.battle_arena8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena8</span></a></li>
+<li><a href="actions.battle_arena9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>arena9</span></a></li>
+<li><a href="actions.battle_grand_finale.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>grand_<wbr/>finale</span></a></li>
+<li><a href="actions.battle_grand_finale2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>grand_<wbr/>finale2</span></a></li>
+<li><a href="actions.battle_grand_finale3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>battle_<wbr/>grand_<wbr/>finale3</span></a></li>
+<li><a href="actions.buy.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy</span></a></li>
+<li><a href="actions.buy10.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy10</span></a></li>
+<li><a href="actions.buy11.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy11</span></a></li>
+<li><a href="actions.buy12.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy12</span></a></li>
+<li><a href="actions.buy2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy2</span></a></li>
+<li><a href="actions.buy3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy3</span></a></li>
+<li><a href="actions.buy4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy4</span></a></li>
+<li><a href="actions.buy5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy5</span></a></li>
+<li><a href="actions.buy6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy6</span></a></li>
+<li><a href="actions.buy7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy7</span></a></li>
+<li><a href="actions.buy8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy8</span></a></li>
+<li><a href="actions.buy9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy9</span></a></li>
+<li><a href="actions.buy_multiple.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy_<wbr/>multiple</span></a></li>
+<li><a href="actions.buy_product.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>buy_<wbr/>product</span></a></li>
+<li><a href="actions.cancel_monster_collect.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>cancel_<wbr/>monster_<wbr/>collect</span></a></li>
+<li><a href="actions.cancel_product_registration.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>cancel_<wbr/>product_<wbr/>registration</span></a></li>
+<li><a href="actions.charge_action_point.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>charge_<wbr/>action_<wbr/>point</span></a></li>
+<li><a href="actions.charge_action_point2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>charge_<wbr/>action_<wbr/>point2</span></a></li>
+<li><a href="actions.charge_action_point3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>charge_<wbr/>action_<wbr/>point3</span></a></li>
+<li><a href="actions.claim_monster_collection_reward.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>claim_<wbr/>monster_<wbr/>collection_<wbr/>reward</span></a></li>
+<li><a href="actions.claim_monster_collection_reward2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>claim_<wbr/>monster_<wbr/>collection_<wbr/>reward2</span></a></li>
+<li><a href="actions.claim_monster_collection_reward3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>claim_<wbr/>monster_<wbr/>collection_<wbr/>reward3</span></a></li>
+<li><a href="actions.claim_raid_reward.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>claim_<wbr/>raid_<wbr/>reward</span></a></li>
+<li><a href="actions.claim_stake_reward.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>claim_<wbr/>stake_<wbr/>reward</span></a></li>
+<li><a href="actions.claim_stake_reward2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>claim_<wbr/>stake_<wbr/>reward2</span></a></li>
+<li><a href="actions.claim_stake_reward3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>claim_<wbr/>stake_<wbr/>reward3</span></a></li>
+<li><a href="actions.claim_world_boss_kill_reward.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>claim_<wbr/>world_<wbr/>boss_<wbr/>kill_<wbr/>reward</span></a></li>
+<li><a href="actions.combination_consumable.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>consumable</span></a></li>
+<li><a href="actions.combination_consumable2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>consumable2</span></a></li>
+<li><a href="actions.combination_consumable3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>consumable3</span></a></li>
+<li><a href="actions.combination_consumable4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>consumable4</span></a></li>
+<li><a href="actions.combination_consumable5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>consumable5</span></a></li>
+<li><a href="actions.combination_consumable6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>consumable6</span></a></li>
+<li><a href="actions.combination_consumable7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>consumable7</span></a></li>
+<li><a href="actions.combination_consumable8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>consumable8</span></a></li>
+<li><a href="actions.combination_equipment.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment</span></a></li>
+<li><a href="actions.combination_equipment10.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment10</span></a></li>
+<li><a href="actions.combination_equipment11.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment11</span></a></li>
+<li><a href="actions.combination_equipment12.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment12</span></a></li>
+<li><a href="actions.combination_equipment13.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment13</span></a></li>
+<li><a href="actions.combination_equipment14.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment14</span></a></li>
+<li><a href="actions.combination_equipment15.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment15</span></a></li>
+<li><a href="actions.combination_equipment16.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment16</span></a></li>
+<li><a href="actions.combination_equipment2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment2</span></a></li>
+<li><a href="actions.combination_equipment3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment3</span></a></li>
+<li><a href="actions.combination_equipment4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment4</span></a></li>
+<li><a href="actions.combination_equipment5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment5</span></a></li>
+<li><a href="actions.combination_equipment6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment6</span></a></li>
+<li><a href="actions.combination_equipment7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment7</span></a></li>
+<li><a href="actions.combination_equipment8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment8</span></a></li>
+<li><a href="actions.combination_equipment9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>combination_<wbr/>equipment9</span></a></li>
+<li><a href="actions.create_avatar.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create_<wbr/>avatar</span></a></li>
+<li><a href="actions.create_avatar2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create_<wbr/>avatar2</span></a></li>
+<li><a href="actions.create_avatar3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create_<wbr/>avatar3</span></a></li>
+<li><a href="actions.create_avatar4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create_<wbr/>avatar4</span></a></li>
+<li><a href="actions.create_avatar5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create_<wbr/>avatar5</span></a></li>
+<li><a href="actions.create_avatar6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create_<wbr/>avatar6</span></a></li>
+<li><a href="actions.create_avatar7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create_<wbr/>avatar7</span></a></li>
+<li><a href="actions.create_avatar8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create_<wbr/>avatar8</span></a></li>
+<li><a href="actions.create_pending_activation.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>create_<wbr/>pending_<wbr/>activation</span></a></li>
+<li><a href="actions.daily_reward.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>daily_<wbr/>reward</span></a></li>
+<li><a href="actions.daily_reward2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>daily_<wbr/>reward2</span></a></li>
+<li><a href="actions.daily_reward3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>daily_<wbr/>reward3</span></a></li>
+<li><a href="actions.daily_reward4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>daily_<wbr/>reward4</span></a></li>
+<li><a href="actions.daily_reward5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>daily_<wbr/>reward5</span></a></li>
+<li><a href="actions.daily_reward6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>daily_<wbr/>reward6</span></a></li>
+<li><a href="actions.daily_reward7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>daily_<wbr/>reward7</span></a></li>
+<li><a href="actions.event_consumable_item_crafts.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>event_<wbr/>consumable_<wbr/>item_<wbr/>crafts</span></a></li>
+<li><a href="actions.event_dungeon_battle.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>event_<wbr/>dungeon_<wbr/>battle</span></a></li>
+<li><a href="actions.event_dungeon_battle2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>event_<wbr/>dungeon_<wbr/>battle2</span></a></li>
+<li><a href="actions.event_dungeon_battle3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>event_<wbr/>dungeon_<wbr/>battle3</span></a></li>
+<li><a href="actions.event_dungeon_battle4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>event_<wbr/>dungeon_<wbr/>battle4</span></a></li>
+<li><a href="actions.event_dungeon_battle5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>event_<wbr/>dungeon_<wbr/>battle5</span></a></li>
+<li><a href="actions.event_material_item_crafts.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>event_<wbr/>material_<wbr/>item_<wbr/>crafts</span></a></li>
+<li><a href="actions.grinding.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>grinding</span></a></li>
+<li><a href="actions.hack_and_slash.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash</span></a></li>
+<li><a href="actions.hack_and_slash10.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash10</span></a></li>
+<li><a href="actions.hack_and_slash11.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash11</span></a></li>
+<li><a href="actions.hack_and_slash12.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash12</span></a></li>
+<li><a href="actions.hack_and_slash13.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash13</span></a></li>
+<li><a href="actions.hack_and_slash14.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash14</span></a></li>
+<li><a href="actions.hack_and_slash15.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash15</span></a></li>
+<li><a href="actions.hack_and_slash16.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash16</span></a></li>
+<li><a href="actions.hack_and_slash17.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash17</span></a></li>
+<li><a href="actions.hack_and_slash18.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash18</span></a></li>
+<li><a href="actions.hack_and_slash19.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash19</span></a></li>
+<li><a href="actions.hack_and_slash2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash2</span></a></li>
+<li><a href="actions.hack_and_slash20.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash20</span></a></li>
+<li><a href="actions.hack_and_slash21.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash21</span></a></li>
+<li><a href="actions.hack_and_slash3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash3</span></a></li>
+<li><a href="actions.hack_and_slash4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash4</span></a></li>
+<li><a href="actions.hack_and_slash5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash5</span></a></li>
+<li><a href="actions.hack_and_slash6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash6</span></a></li>
+<li><a href="actions.hack_and_slash7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash7</span></a></li>
+<li><a href="actions.hack_and_slash8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash8</span></a></li>
+<li><a href="actions.hack_and_slash9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash9</span></a></li>
+<li><a href="actions.hack_and_slash_random_buff.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash_<wbr/>random_<wbr/>buff</span></a></li>
+<li><a href="actions.hack_and_slash_sweep.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash_<wbr/>sweep</span></a></li>
+<li><a href="actions.hack_and_slash_sweep2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash_<wbr/>sweep2</span></a></li>
+<li><a href="actions.hack_and_slash_sweep3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash_<wbr/>sweep3</span></a></li>
+<li><a href="actions.hack_and_slash_sweep4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash_<wbr/>sweep4</span></a></li>
+<li><a href="actions.hack_and_slash_sweep5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash_<wbr/>sweep5</span></a></li>
+<li><a href="actions.hack_and_slash_sweep6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash_<wbr/>sweep6</span></a></li>
+<li><a href="actions.hack_and_slash_sweep7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash_<wbr/>sweep7</span></a></li>
+<li><a href="actions.hack_and_slash_sweep8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash_<wbr/>sweep8</span></a></li>
+<li><a href="actions.hack_and_slash_sweep9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>hack_<wbr/>and_<wbr/>slash_<wbr/>sweep9</span></a></li>
+<li><a href="actions.item_enhancement.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement</span></a></li>
+<li><a href="actions.item_enhancement10.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement10</span></a></li>
+<li><a href="actions.item_enhancement11.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement11</span></a></li>
+<li><a href="actions.item_enhancement2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement2</span></a></li>
+<li><a href="actions.item_enhancement3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement3</span></a></li>
+<li><a href="actions.item_enhancement4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement4</span></a></li>
+<li><a href="actions.item_enhancement5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement5</span></a></li>
+<li><a href="actions.item_enhancement6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement6</span></a></li>
+<li><a href="actions.item_enhancement7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement7</span></a></li>
+<li><a href="actions.item_enhancement8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement8</span></a></li>
+<li><a href="actions.item_enhancement9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>item_<wbr/>enhancement9</span></a></li>
+<li><a href="actions.join_arena.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>join_<wbr/>arena</span></a></li>
+<li><a href="actions.join_arena2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>join_<wbr/>arena2</span></a></li>
+<li><a href="actions.join_arena3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>join_<wbr/>arena3</span></a></li>
+<li><a href="actions.migrate_monster_collection.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>migrate_<wbr/>monster_<wbr/>collection</span></a></li>
+<li><a href="actions.migration_activated_accounts_state.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>migration_<wbr/>activated_<wbr/>accounts_<wbr/>state</span></a></li>
+<li><a href="actions.migration_avatar_state.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>migration_<wbr/>avatar_<wbr/>state</span></a></li>
+<li><a href="actions.migration_legacy_shop.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>migration_<wbr/>legacy_<wbr/>shop</span></a></li>
+<li><a href="actions.migration_legacy_shop2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>migration_<wbr/>legacy_<wbr/>shop2</span></a></li>
+<li><a href="actions.mimisbrunnr_battle.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle</span></a></li>
+<li><a href="actions.mimisbrunnr_battle10.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle10</span></a></li>
+<li><a href="actions.mimisbrunnr_battle11.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle11</span></a></li>
+<li><a href="actions.mimisbrunnr_battle12.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle12</span></a></li>
+<li><a href="actions.mimisbrunnr_battle13.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle13</span></a></li>
+<li><a href="actions.mimisbrunnr_battle2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle2</span></a></li>
+<li><a href="actions.mimisbrunnr_battle3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle3</span></a></li>
+<li><a href="actions.mimisbrunnr_battle4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle4</span></a></li>
+<li><a href="actions.mimisbrunnr_battle5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle5</span></a></li>
+<li><a href="actions.mimisbrunnr_battle6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle6</span></a></li>
+<li><a href="actions.mimisbrunnr_battle7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle7</span></a></li>
+<li><a href="actions.mimisbrunnr_battle8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle8</span></a></li>
+<li><a href="actions.mimisbrunnr_battle9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>mimisbrunnr_<wbr/>battle9</span></a></li>
+<li><a href="actions.monster_collect.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>monster_<wbr/>collect</span></a></li>
+<li><a href="actions.monster_collect2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>monster_<wbr/>collect2</span></a></li>
+<li><a href="actions.monster_collect3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>monster_<wbr/>collect3</span></a></li>
+<li><a href="actions.op_validator_set.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>op_<wbr/>validator_<wbr/>set</span></a></li>
+<li><a href="actions.patch_table_sheet.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>patch_<wbr/>table_<wbr/>sheet</span></a></li>
+<li><a href="actions.pet_enhancement.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>pet_<wbr/>enhancement</span></a></li>
+<li><a href="actions.prepare_reward_assets.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>prepare_<wbr/>reward_<wbr/>assets</span></a></li>
+<li><a href="actions.raid.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>raid</span></a></li>
+<li><a href="actions.raid2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>raid2</span></a></li>
+<li><a href="actions.raid3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>raid3</span></a></li>
+<li><a href="actions.raid4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>raid4</span></a></li>
+<li><a href="actions.raid5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>raid5</span></a></li>
+<li><a href="actions.raid6.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>raid6</span></a></li>
+<li><a href="actions.ranking_battle.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle</span></a></li>
+<li><a href="actions.ranking_battle10.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle10</span></a></li>
+<li><a href="actions.ranking_battle11.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle11</span></a></li>
+<li><a href="actions.ranking_battle12.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle12</span></a></li>
+<li><a href="actions.ranking_battle2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle2</span></a></li>
+<li><a href="actions.ranking_battle3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle3</span></a></li>
+<li><a href="actions.ranking_battle4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle4</span></a></li>
+<li><a href="actions.ranking_battle5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle5</span></a></li>
+<li><a href="actions.ranking_battle6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle6</span></a></li>
+<li><a href="actions.ranking_battle7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle7</span></a></li>
+<li><a href="actions.ranking_battle8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle8</span></a></li>
+<li><a href="actions.ranking_battle9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>ranking_<wbr/>battle9</span></a></li>
+<li><a href="actions.rapid_combination.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rapid_<wbr/>combination</span></a></li>
+<li><a href="actions.rapid_combination2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rapid_<wbr/>combination2</span></a></li>
+<li><a href="actions.rapid_combination3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rapid_<wbr/>combination3</span></a></li>
+<li><a href="actions.rapid_combination4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rapid_<wbr/>combination4</span></a></li>
+<li><a href="actions.rapid_combination5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rapid_<wbr/>combination5</span></a></li>
+<li><a href="actions.rapid_combination6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rapid_<wbr/>combination6</span></a></li>
+<li><a href="actions.rapid_combination7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rapid_<wbr/>combination7</span></a></li>
+<li><a href="actions.rapid_combination8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rapid_<wbr/>combination8</span></a></li>
+<li><a href="actions.rapid_combination9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rapid_<wbr/>combination9</span></a></li>
+<li><a href="actions.re_register_product.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>re_<wbr/>register_<wbr/>product</span></a></li>
+<li><a href="actions.redeem_code.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>redeem_<wbr/>code</span></a></li>
+<li><a href="actions.redeem_code2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>redeem_<wbr/>code2</span></a></li>
+<li><a href="actions.redeem_code3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>redeem_<wbr/>code3</span></a></li>
+<li><a href="actions.redeem_coupon.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>redeem_<wbr/>coupon</span></a></li>
+<li><a href="actions.register_product.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>register_<wbr/>product</span></a></li>
+<li><a href="actions.renew_admin_state.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>renew_<wbr/>admin_<wbr/>state</span></a></li>
+<li><a href="actions.runeEnhancement.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rune<wbr/>Enhancement</span></a></li>
+<li><a href="actions.runeEnhancement2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>rune<wbr/>Enhancement2</span></a></li>
+<li><a href="actions.secure_mining_reward.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>secure_<wbr/>mining_<wbr/>reward</span></a></li>
+<li><a href="actions.sell.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell</span></a></li>
+<li><a href="actions.sell10.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell10</span></a></li>
+<li><a href="actions.sell11.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell11</span></a></li>
+<li><a href="actions.sell12.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell12</span></a></li>
+<li><a href="actions.sell2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell2</span></a></li>
+<li><a href="actions.sell3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell3</span></a></li>
+<li><a href="actions.sell4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell4</span></a></li>
+<li><a href="actions.sell5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell5</span></a></li>
+<li><a href="actions.sell6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell6</span></a></li>
+<li><a href="actions.sell7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell7</span></a></li>
+<li><a href="actions.sell8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell8</span></a></li>
+<li><a href="actions.sell9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell9</span></a></li>
+<li><a href="actions.sell_cancellation.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell_<wbr/>cancellation</span></a></li>
+<li><a href="actions.sell_cancellation2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell_<wbr/>cancellation2</span></a></li>
+<li><a href="actions.sell_cancellation3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell_<wbr/>cancellation3</span></a></li>
+<li><a href="actions.sell_cancellation4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell_<wbr/>cancellation4</span></a></li>
+<li><a href="actions.sell_cancellation5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell_<wbr/>cancellation5</span></a></li>
+<li><a href="actions.sell_cancellation6.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell_<wbr/>cancellation6</span></a></li>
+<li><a href="actions.sell_cancellation7.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell_<wbr/>cancellation7</span></a></li>
+<li><a href="actions.sell_cancellation8.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell_<wbr/>cancellation8</span></a></li>
+<li><a href="actions.sell_cancellation9.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>sell_<wbr/>cancellation9</span></a></li>
+<li><a href="actions.stake.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>stake</span></a></li>
+<li><a href="actions.stake2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>stake2</span></a></li>
+<li><a href="actions.transfer_asset.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>transfer_<wbr/>asset</span></a></li>
+<li><a href="actions.transfer_asset2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>transfer_<wbr/>asset2</span></a></li>
+<li><a href="actions.transfer_asset3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>transfer_<wbr/>asset3</span></a></li>
+<li><a href="actions.transfer_assets.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>transfer_<wbr/>assets</span></a></li>
+<li><a href="actions.unlock_equipment_recipe.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>unlock_<wbr/>equipment_<wbr/>recipe</span></a></li>
+<li><a href="actions.unlock_equipment_recipe2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>unlock_<wbr/>equipment_<wbr/>recipe2</span></a></li>
+<li><a href="actions.unlock_rune_slot.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>unlock_<wbr/>rune_<wbr/>slot</span></a></li>
+<li><a href="actions.unlock_world.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>unlock_<wbr/>world</span></a></li>
+<li><a href="actions.unlock_world2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>unlock_<wbr/>world2</span></a></li>
+<li><a href="actions.update_sell.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>update_<wbr/>sell</span></a></li>
+<li><a href="actions.update_sell2.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>update_<wbr/>sell2</span></a></li>
+<li><a href="actions.update_sell3.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>update_<wbr/>sell3</span></a></li>
+<li><a href="actions.update_sell4.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>update_<wbr/>sell4</span></a></li>
+<li><a href="actions.update_sell5.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-64"></use></svg><span>update_<wbr/>sell5</span></a></li></ul></div></details></li>
+<li><a href="../modules/dotnet.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>dotnet</span></a></li>
+<li><a href="../modules/index.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>index</span></a></li>
+<li><a href="../modules/utils.html"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="#icon-4"></use></svg><span>utils</span></a></li></ul></nav></div></div></div>
+<div class="tsd-generator">
+<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
+<div class="overlay"></div></body></html>
