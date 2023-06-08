@@ -1,4 +1,3 @@
-import { validate as validateUUID } from "uuid";
 import { isAddress } from "@ethersproject/address"
 
 interface DotnetType {
@@ -6,11 +5,7 @@ interface DotnetType {
 }
 
 export class Guid implements DotnetType {
-    constructor(private readonly raw: string) {
-        if (!validateUUID(raw)) {
-            throw new Error("Not suitable for Guid");
-        }
-    }
+    constructor(private readonly raw: string) {}
 
     serializeAsDotnet() {
         return this.raw;
