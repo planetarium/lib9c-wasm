@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Text.Json;
+using Bencodex;
 using Libplanet;
 using Libplanet.Assets;
 
@@ -24,15 +25,15 @@ public static class JsonUtils
 
         if (targetType == typeof(Libplanet.Assets.Currency))
         {
-#pragma warning disable CS0618
-            return Currency.Legacy(
-                element.GetProperty("ticker").GetString(),
-                element.GetProperty("decimalPlaces").GetByte(),
-                element.TryGetProperty("minters", out var minters)
-                    ? minters.EnumerateArray()
-                        .Select(value => ConvertJsonElementTo(value, typeof(Address))).Cast<Address>().ToImmutableHashSet()
-                    : null);
-#pragma warning restore CS0618
+            Console.WriteLine(element.ValueKind);
+            return new Currency(new Codec().Decode(element.GetBytesFromBase64()));
+        }
+
+        if (targetType == typeof(Libplanet.Assets.FungibleAssetValue))
+        {
+            var currency = (Libplanet.Assets.Currency)ConvertJsonElementTo(element.GetProperty("currency"), typeof(Libplanet.Assets.Currency));
+            var rawValue = (BigInteger)ConvertJsonElementTo(element.GetProperty("rawValue"), typeof(BigInteger));
+            return FungibleAssetValue.FromRawValue(currency, rawValue);
         }
 
         if (targetType == typeof(Address))
@@ -147,6 +148,7 @@ public static class JsonUtils
             [typeof(System.Guid)] = "Guid",
             [typeof(Libplanet.Address)] = "Address",
             [typeof(Libplanet.Assets.Currency)] = "Currency",
+            [typeof(Libplanet.Assets.FungibleAssetValue)] = "FungibleAssetValue",
         };
 
         if (typeToResolvedType.TryGetValue(type, out string value))

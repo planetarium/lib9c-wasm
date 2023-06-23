@@ -89,36 +89,63 @@ function generateActionsTsFile() {
     ];
   }
 
-  const typesImportDecl = ts.factory.createImportDeclaration(
-    undefined,
-    ts.factory.createImportClause(
-      false,
+  const typesImportDecls = [
+    ts.factory.createImportDeclaration(
       undefined,
-      ts.factory.createNamedImports([
-        ts.factory.createImportSpecifier(
-          false,
-          undefined,
-          ts.factory.createIdentifier("Address")
-        ),
-        ts.factory.createImportSpecifier(
-          false,
-          undefined,
-          ts.factory.createIdentifier("Guid")
-        ),
-        ts.factory.createImportSpecifier(
-          false,
-          undefined,
-          ts.factory.createIdentifier("Currency")
-        ),
-        ts.factory.createImportSpecifier(
-          false,
-          undefined,
-          ts.factory.createIdentifier("serializeObjectAsDotnet")
-        ),
-      ])
+      ts.factory.createImportClause(
+        false,
+        undefined,
+        ts.factory.createNamedImports([
+          ts.factory.createImportSpecifier(
+            false,
+            undefined,
+            ts.factory.createIdentifier("Guid")
+          ),
+          ts.factory.createImportSpecifier(
+            false,
+            undefined,
+            ts.factory.createIdentifier("serializeObjectAsDotnet")
+          ),
+        ])
+      ),
+      ts.factory.createStringLiteral("./utils")
     ),
-    ts.factory.createStringLiteral("./utils")
-  );
+    ts.factory.createImportDeclaration(
+      undefined,
+      ts.factory.createImportClause(
+        false,
+        undefined,
+        ts.factory.createNamedImports([
+          ts.factory.createImportSpecifier(
+            false,
+            undefined,
+            ts.factory.createIdentifier("Currency")
+          ),
+          ts.factory.createImportSpecifier(
+            false,
+            undefined,
+            ts.factory.createIdentifier("FungibleAssetValue")
+          ),
+        ])
+      ),
+      ts.factory.createStringLiteral("@planetarium/tx")
+    ),
+    ts.factory.createImportDeclaration(
+      undefined,
+      ts.factory.createImportClause(
+        false,
+        undefined,
+        ts.factory.createNamedImports([
+          ts.factory.createImportSpecifier(
+            false,
+            undefined,
+            ts.factory.createIdentifier("Address")
+          ),
+        ])
+      ),
+      ts.factory.createStringLiteral("@planetarium/account")
+    ),
+  ];
 
   const returnType = ts.factory.createTypeReferenceNode("Uint8Array");
   const buildActionWrapperImplDecl = ts.factory.createFunctionDeclaration(
@@ -204,7 +231,7 @@ function generateActionsTsFile() {
 
   const nodeArray = ts.factory.createNodeArray([
     importDecl,
-    typesImportDecl,
+    ...typesImportDecls,
     buildActionWrapperImplDecl,
     ...actionsFunctionDecls,
   ]);
