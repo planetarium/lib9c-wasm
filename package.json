@@ -30,8 +30,9 @@
     "typedoc": "^0.24.8",
     "typescript": "^5.0.4"
   },
+  "packageManager": "yarn@3.5.1",
   "dependencies": {
-    "@ethersproject/address": "^5.7.0"
-  },
-  "packageManager": "yarn@3.5.1"
+    "@planetarium/account": "^2.2.0",
+    "@planetarium/tx": "^2.2.0"
+  }
 }
