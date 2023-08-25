@@ -7,7 +7,9 @@ using System.Text;
 using System.Text.Json;
 using Bencodex;
 using Libplanet;
-using Libplanet.Assets;
+using Libplanet.Crypto;
+using Libplanet.Types;
+using Libplanet.Types.Assets;
 
 namespace Lib9c.Wasm;
 public static class JsonUtils
@@ -23,15 +25,15 @@ public static class JsonUtils
             return BigInteger.Parse(value);
         }
 
-        if (targetType == typeof(Libplanet.Assets.Currency))
+        if (targetType == typeof(Libplanet.Types.Assets.Currency))
         {
             Console.WriteLine(element.ValueKind);
             return new Currency(new Codec().Decode(element.GetBytesFromBase64()));
         }
 
-        if (targetType == typeof(Libplanet.Assets.FungibleAssetValue))
+        if (targetType == typeof(Libplanet.Types.Assets.FungibleAssetValue))
         {
-            var currency = (Libplanet.Assets.Currency)ConvertJsonElementTo(element.GetProperty("currency"), typeof(Libplanet.Assets.Currency));
+            var currency = (Libplanet.Types.Assets.Currency)ConvertJsonElementTo(element.GetProperty("currency"), typeof(Libplanet.Types.Assets.Currency));
             var rawValue = (BigInteger)ConvertJsonElementTo(element.GetProperty("rawValue"), typeof(BigInteger));
             return FungibleAssetValue.FromRawValue(currency, rawValue);
         }
@@ -146,9 +148,9 @@ public static class JsonUtils
             [typeof(System.Decimal)] = "number",
 
             [typeof(System.Guid)] = "Guid",
-            [typeof(Libplanet.Address)] = "Address",
-            [typeof(Libplanet.Assets.Currency)] = "Currency",
-            [typeof(Libplanet.Assets.FungibleAssetValue)] = "FungibleAssetValue",
+            [typeof(Libplanet.Crypto.Address)] = "Address",
+            [typeof(Libplanet.Types.Assets.Currency)] = "Currency",
+            [typeof(Libplanet.Types.Assets.FungibleAssetValue)] = "FungibleAssetValue",
         };
 
         if (typeToResolvedType.TryGetValue(type, out string value))
@@ -161,7 +163,7 @@ public static class JsonUtils
             return "\"BencodexValue\"";
         }
 
-        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Libplanet.HashDigest<>))
+        if (type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Libplanet.Common.HashDigest<>))
         {
             return "string";
         }
