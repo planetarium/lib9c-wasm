@@ -67,7 +67,7 @@ public class Program
     }
 
     [JSInvokable]
-    public static string UseStageSimulatorV3(string avatarState, string PreEvaluationHash, string signature, int worldId, int stageId)
+    public static string UseStageSimulator(string avatarState, string PreEvaluationHash, string signature, int worldId, int stageId, JsonElement jsonsheet)
     {
         var preEvaluationHashBytes = ByteUtil.ParseHex(PreEvaluationHash);
         byte[] hashedSignature;
@@ -76,24 +76,23 @@ public class Program
             hashedSignature = hasher.ComputeHash(ByteUtil.ParseHex(signature));
         }
 
-        var _sheets = TableSheetsImporter.ImportSheets();
+        var _sheets = JsonSerializer.Deserialize<Dictionary<string, string>>(jsonsheet);
         var _tableSheets = new TableSheets(_sheets);
         var state = (Bencodex.Types.Dictionary)new Codec().Decode(ByteUtil.ParseHex(avatarState));
-        var _avatarState = new AvatarState(state);
 
-        var skillsOnWaveStart = new List<Skill>();
+        AvatarState _avatarState = new AvatarState(state);
 
         var seed = (preEvaluationHashBytes.Length > 0
                     ? BitConverter.ToInt32(preEvaluationHashBytes, 0) : 0)
                 ^ (signature.Any() ? BitConverter.ToInt32(hashedSignature, 0) : 0) - 0;
         var contextRandom = new TestRandom(seed);
 
-        var simulator = new StageSimulatorV3(
+        var simulator = new StageSimulator(
                 contextRandom,
                 _avatarState,
                 new List<Guid>(),
-                null,
-                skillsOnWaveStart,
+                new List<RuneState>(),
+                new List<Skill>(),
                 worldId,
                 stageId,
                 _tableSheets.StageSheet[stageId],
@@ -109,6 +108,6 @@ public class Program
                     _tableSheets.MaterialItemSheet));
         simulator.Simulate();
         var log = simulator.Log;
-        return string.Format("", log.result, log.clearedWaveNumber);
+        return $"{log.result}, {log.clearedWaveNumber}, {log.waveCount}";
     }
 }
