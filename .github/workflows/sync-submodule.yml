@@ -1,31 +1,29 @@
 name: Update submodules on A release
 
 on:
+  workflow_dispatch:
   repository_dispatch:
-    types: [9c-release]
+    types: [9c-main-release]
 
 jobs:
   update:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        token: ${{ secrets.SUBMODULE_UPDATER_GH_TOKEN  }}
-        submodules: 'recursive'
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN  }}
+          submodules: "recursive"
 
-    - name: Update submodules
-      run: |
-        cd libplanet
-        git checkout $(curl -s https://api.github.com/repos/planetarium/NineChronicles/git/ref/tags/latest | jq .object.sha | tr -d '"')
-        cd ../lib9c
-        git checkout $(curl -s https://api.github.com/repos/planetarium/NineChronicles/git/ref/tags/latest | jq .object.sha | tr -d '"')
+      - name: Update submodules
+        run: |
+          curl -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" -s https://api.github.com/repos/planetarium/NineChronicles/git/ref/tags/latest | jq .object.sha | tr -d '"'
 
-    - name: Commit and push changes
-      run: |
-        git config user.name "Bump to Latest Tag"
-        git config user.email "action@github.com"
-        git add .
-        git commit -m "Update submodules to match latest release of NineChroncles" || echo "No changes to commit"
-        git push
+      - name: Commit and push changes
+        run: |
+          git config user.name "Bump to Latest Main Tag"
+          git config user.email "action@github.com"
+          git add .
+          git commit -m "Update submodules to match latest release of NineChroncles" || echo "No changes to commit"
+          git push
