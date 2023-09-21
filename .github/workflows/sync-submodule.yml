@@ -1,4 +1,4 @@
-name: Update Submodule on Release of NineChronicles
+name: Update Submodule on 9c-main release
 
 on:
   workflow_dispatch:
@@ -10,14 +10,34 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Get latest submodule commit from NineChronicles
-      id: get-commit
-      run: |
-        COMMIT_SHA=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-          https://api.github.com/repos/planetarium/NineChronicles/git/trees/main?recursive=1 )
-        echo "$COMMIT_SHA"
+      - name: Parse lib9c submodule path and commit hash
+        id: get-sha
+        run: |
+          LATEST_RELEASE=$( gh api /repos/planetarium/NineChronicles/releases/latest | jq -r '.tag_name' )
+          LIB9C_PATH=$( gh api /repos/planetarium/NineChronicles/contents/.gitmodules?ref=${LATEST_RELEASE} | jq -r '.content' | base64 --decode | awk -F' = ' '/\[submodule/ {flag=0} /lib9c/ {flag=1} /path/ && flag {print $2}')
+          COMMIT_SHA=$( gh api /repos/planetarium/NineChronicles/contents/${LIB9C_PATH}?ref=${LATEST_RELEASE} | jq -r '.sha')
+          echo $LIB9C_PATH
+          echo "commit=$COMMIT_SHA" >> $GITHUB_OUTPUT
+          echo "tag=$LATEST_RELEASE" >> $GITHUB_OUTPUT
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update submodule
+        run: |
+          git submodule update --init --remote --recursive lib9c
+          cd lib9c
+          git checkout ${{ steps.get-sha.outputs.commit }}
+          cd ..
+      - name: Commit changes
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: Lib9c Bumper
+          author_email: bumper@planetariumhq.com
+          message: 'Bump Lib9c to 9c-main (Tag: ${{ steps.get-sha.outputs.tag }})'
+          add: 'lib9c'
+          fetch: false
