@@ -1,9 +1,8 @@
 name: Update Submodule on 9c-main release
 
 on:
-  workflow_dispatch:
   repository_dispatch:
-    types: [9c-release]
+    types: [release, ping]
 
 jobs:
   update-submodule:
@@ -38,6 +37,6 @@ jobs:
         with:
           author_name: Lib9c Bumper
           author_email: bumper@planetariumhq.com
-          message: 'Bump Lib9c to 9c-main (Tag: ${{ steps.get-sha.outputs.tag }})'
-          add: 'lib9c'
+          message: "Bump Lib9c to 9c-main (Tag: ${{ steps.get-sha.outputs.tag }})"
+          add: "lib9c"
           fetch: false
